@@ -34,7 +34,7 @@ const Cancha = sequelize.define('Cancha', {
     timestamps: false,
 });
 
-TipoCancha.hasMany(Cancha, { foreignKey: 'idTipoCancha' }); 
+TipoCancha.hasMany(Cancha, { foreignKey: 'idTipoCancha' }); //1..*
 Cancha.belongsTo(TipoCancha, { foreignKey: 'idTipoCancha' }); 
 
 export default Cancha;

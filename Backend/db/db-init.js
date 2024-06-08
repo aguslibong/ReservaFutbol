@@ -1,8 +1,8 @@
 import sequelize from "./db.js";
 import Cancha from '../src/model/cancha-model.js';
 import TipoCancha from '../src/model/tipoCancha-model.js';
-//import Cliente from '../src/model/cliente-model.js'
-//import TipoDocumento from '../src/model/tipoDocumento-model.js'
+import Cliente from '../src/model/cliente-model.js'
+import TipoDocumento from '../src/model/tipoDocumento-model.js'
 import Reserva from '../src/model/reserva-model.js'
 import TipoReserva from '../src/model/tipoReserva-model.js'
 

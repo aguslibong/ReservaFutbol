@@ -7,6 +7,8 @@ import Cancha from "./cancha-model.js";
 //import Cliente from "./Cliente-model.js"
 import tipoReserva from "./tipoReserva-model.js"
 
+import Cliente from './cliente-model.js'
+
 const Reserva = sequelize.define("Reserva", {
     idReserva: {
     type: DataTypes.INTEGER,
@@ -26,7 +28,11 @@ const Reserva = sequelize.define("Reserva", {
         }
      },
     idCliente: { type: DataTypes.INTEGER,
-        //allowNull: false
+        allowNull: false,
+        reference: {
+            model: Cliente,
+            key: 'idCliente'
+        }
      },
     idTipoReserva: { type: DataTypes.INTEGER,
         allowNull: false,
@@ -63,15 +69,15 @@ const Reserva = sequelize.define("Reserva", {
             foreignKey: 'idTipoReserva',
             targetKey: 'idTipoReserva',
         });
-/*  
-    Cliente.hasMany(Reservas, {
+ 
+    Cliente.hasMany(Reserva, {
             foreignKey: 'idCliente',
             sourceKey: 'idCliente',
             onDelete: 'CASCADE'
         });
-    Reservas.belongsTo(Cliente, {
+    Reserva.belongsTo(Cliente, {
             foreignKey: 'idCliente',
             targetKey: 'idCliente',
         });
-*/
+
 export default Reserva; 

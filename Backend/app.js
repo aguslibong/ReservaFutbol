@@ -1,6 +1,6 @@
 import express from 'express';
 import dbInit from './db/db-init.js';
-import reservaRouter from './src/router/router.js'; // Asegúrate de ajustar la ruta según tu estructura
+import router from './src/router/router.js'; 
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Usar rutas
-app.use('/api', reservaRouter); // Usar el router importado
+app.use('/api', router); // Usar el router importado
 
 // Inicializar la base de datos
 dbInit();
@@ -24,3 +24,4 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
 });
+

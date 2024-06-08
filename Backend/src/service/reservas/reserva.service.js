@@ -15,7 +15,6 @@ export const Reservas = async (req, res) => {
 export const ReservasId = async (req, res) => {
     try {
         const id = req.params.id;
-        console.log(id)
         const reservaId = await Reserva.findOne({ 
             where: { 
                 idReserva: id
