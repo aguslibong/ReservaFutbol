@@ -1,7 +1,7 @@
 import express from "express";
 import sequelize from "../../db/db.js"
-import { Reservas , ReservasId } from "../service/reservas/reserva.service.js"
-import {getCancha} from '../service/canchas.service/canchas.service.js'
+import { Reservas, ReservasPost } from "../service/reservas/reserva.service.js"
+import {getCancha} from '../service/canchas/canchas.service.js'
 
 const router = express.Router();
 
@@ -9,9 +9,13 @@ const router = express.Router();
 //================================================================================================================
 // router para Reservas
 
+//get
 router.get('/reservas', Reservas);
-router.get('/reservas/:id', ReservasId);
+router.get('/reservas/:id', Reservas);
 
+//post
+
+router.post('/reservas', ReservasPost)
 
 
 

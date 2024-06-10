@@ -11,42 +11,42 @@ import Cliente from './cliente-model.js'
 
 const Reserva = sequelize.define("Reserva", {
     idReserva: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true
     },
     fechaReserva: { type: DataTypes.DATE },
-    idCancha: { type: DataTypes.INTEGER,
-        allowNull: false
-    },
-    idCancha: { type: DataTypes.INTEGER,
+    idCancha: { 
+        type: DataTypes.INTEGER,
         allowNull: false,
-        reference: {
+        references: {
             model: Cancha,
             key: 'idCancha'
         }
-     },
-    idCliente: { type: DataTypes.INTEGER,
+    },
+    idCliente: { 
+        type: DataTypes.INTEGER,
         allowNull: false,
-        reference: {
+        references: {
             model: Cliente,
             key: 'idCliente'
         }
-     },
-    idTipoReserva: { type: DataTypes.INTEGER,
+    },
+    idTipoReserva: { 
+        type: DataTypes.INTEGER,
         allowNull: false,
-        reference: {
+        references: {
             model: tipoReserva,
             key: 'idTipoReserva'
         }
-     },
+    },
     comprobante: { type: DataTypes.TEXT },
     hora: { type: DataTypes.TIME }
-   }, {
+}, {
     tableName: "Reserva",
     timestamps: false
-   });
+});
 
    // Definir la relación
     Cancha.hasMany(Reserva, {
