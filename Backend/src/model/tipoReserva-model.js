@@ -12,7 +12,7 @@ const TipoReserva = sequelize.define('TipoReserva', {
         allowNull: false,
     },
 }, {
-    tableName: 'TipoReserva',
+    //tableName: 'TipoReserva',
     timestamps: false,
 });
 

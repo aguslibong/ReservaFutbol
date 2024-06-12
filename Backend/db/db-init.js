@@ -13,7 +13,7 @@ async function dbInit() {
         //Estás asegurando que los modelos están disponibles en el contexto de ese archivo, pero no necesitas hacer ninguna referencia adicional a estos modelos dentro de la función dbInit
         // La magia ocurre cuando llamas a sequelize.sync(), ya que Sequelize internamente maneja las relaciones y sincroniza los modelos que están definidos y disponibles en ese contexto.
         await sequelize.sync();
-        console.log("Modelos sincronizados con la base de datos");
+        console.log("Modelos sincronizados con la base de datos, LISTO JEFE");
     }
     catch (error) {
         console.error("Error al sincronizar modelos:", error);
