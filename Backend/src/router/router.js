@@ -2,6 +2,7 @@ import express from "express";
 import sequelize from "../../db/db.js"
 import { ResourceNotFound, ValidationError } from '../error/errors.js'; //menejo de errores
 import { Reservas, ReservasPost } from "../service/reservas/reserva.service.js"
+import { TipoReservasGet, TipoReservasPost } from "../service/reservas/tipoReserva.service.js"
 import { registrarCancha, getCancha, editarCancha, eliminarCancha } from '../service/canchas/canchas.service.js';
 import { registrarTipoCancha, getTipoCancha, editarTipoCancha, eliminarTipoCancha } from '../service/canchas/tipoCancha.service.js';
 
@@ -11,14 +12,22 @@ const router = express.Router();
 
 // router para Reservas ================================================================================================================
 //get
-router.get('/reservas', Reservas);
-router.get('/reservas/:id', Reservas);
+router.get('/reserva', Reservas);
+router.get('/reserva/:id', Reservas);
 
 //post
 
-router.post('/reservas', ReservasPost)
+router.post('/reserva', ReservasPost)
 
+// router para Tipo de reserva ================================================================================================================
 
+// GET
+
+router.get('/tipoReserva',TipoReservasGet)
+
+//post
+
+router.post('/tipoReserva', TipoReservasPost)
 
 // router para Canchas ================================================================================================================
 
