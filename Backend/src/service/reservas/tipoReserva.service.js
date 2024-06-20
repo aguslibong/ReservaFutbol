@@ -6,12 +6,12 @@ export const TipoReservasGet = async (req, res) => {
     try {
         if (req.params.id) {
             const id = req.params.id;
-            const reservaId = await TipoReserva.findOne({
+            const tipoReservaId = await TipoReserva.findOne({
                 where: {
-                    idReserva: id
+                    idTipoReserva: id
                 }
             });
-            res.json(reservaId);
+            res.json(tipoReservaId);
         } else {
             const respuesta = await TipoReserva.findAll();
             res.json(respuesta);
@@ -29,7 +29,7 @@ export const TipoReservasPost = async (req, res) => {
     console.log(req.body)
     try {
         // Crear la reserva utilizando los datos del cuerpo de la solicitud
-        const tipoReservaCreada = await Reserva.create(nuevaTipoReserva);
+        const tipoReservaCreada = await TipoReserva.create(nuevaTipoReserva);
         // Devolver el código de estado 201 para indicar que la reserva se ha creado correctamente
         res.status(201).json(tipoReservaCreada);
     } catch (error) {
