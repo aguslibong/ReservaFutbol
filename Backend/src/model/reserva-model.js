@@ -5,7 +5,7 @@ import sequelize from '../../db/db.js';
 
 import Cancha from "./cancha-model.js"; 
 //import Cliente from "./Cliente-model.js"
-import tipoReserva from "./tipoReserva-model.js"
+import TipoReserva from "./tipoReserva-model.js"
 
 import Cliente from './cliente-model.js'
 
@@ -37,7 +37,7 @@ const Reserva = sequelize.define("Reserva", {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: tipoReserva,
+            model: TipoReserva,
             key: 'idTipoReserva'
         }
     },
@@ -59,13 +59,13 @@ const Reserva = sequelize.define("Reserva", {
             foreignKey: 'idCancha',
             targetKey: 'idCancha',
         });
-    tipoReserva.hasMany(Reserva, {
+    TipoReserva.hasMany(Reserva, {
             foreignKey: 'idTipoReserva',
             sourceKey: 'idTipoReserva',
             onDelete: 'CASCADE'
         });
   
-    Reserva.belongsTo(tipoReserva, {
+    Reserva.belongsTo(TipoReserva, {
             foreignKey: 'idTipoReserva',
             targetKey: 'idTipoReserva',
         });
