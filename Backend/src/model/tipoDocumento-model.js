@@ -3,7 +3,7 @@ import sequelize from '../../db/db.js';
 
 
 const TipoDocumento = sequelize.define('TipoDocumento', {
-   idtipoDocumento: {
+   idTipoDocumento: {
        type: DataTypes.INTEGER,
        primaryKey: true,
        autoIncrement: true,

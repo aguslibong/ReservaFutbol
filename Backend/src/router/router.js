@@ -5,6 +5,8 @@ import { Reservas, ReservasPost, ReservasPut } from "../service/reservas/reserva
 import { TipoReservasGet, TipoReservasPost, TipoReservasPut } from "../service/reservas/tipoReserva.service.js"
 import { registrarCancha, getCancha, editarCancha, eliminarCancha } from '../service/canchas/canchas.service.js';
 import { registrarTipoCancha, getTipoCancha, editarTipoCancha, eliminarTipoCancha } from '../service/canchas/tipoCancha.service.js';
+import { registrarCliente, getCliente, editarCliente, eliminarCliente } from '../service/clientes/clientes.service.js';
+import { registrarTipoDocumento, getTipoDocumento, editarTipoDocumento, eliminarTipoDocumento } from '../service/clientes/TipoDocumento.service.js';
 
 
 const router = express.Router();
