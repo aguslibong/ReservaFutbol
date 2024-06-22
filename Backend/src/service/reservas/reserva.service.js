@@ -8,30 +8,48 @@ export const Reservas = async (req, res) => {
     try {
         if (req.params.id) {
             const id = req.params.id;
-            const reservaId = await Reserva.findOne({
+            const reserva = await Reserva.findOne({
                 where: {
                     idReserva: id
-                }
+                },
             });
-            res.json(reservaId);
+            if (!reserva){
+                throw new ResourceNotFound("Reserva no encontrada")}
+            res.json(reserva);
         } else {
             const respuesta = await Reserva.findAll();
             res.json(respuesta);
         }
 
     }
-    catch (error) {
-        console.error('Error al buscar Reservas:', error);
-        res.status(500).json({ error: 'Error al buscar Reservas' })
+    catch (err) {
+        if (err instanceof ResourceNotFound) {
+            return res.status(404).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
     }
 }
 
 export const ReservasPost = async (req, res) => {
-    const nuevaReserva = req.body;
-    console.log(req.body)
+    const { fechaReserva, idCancha, idCliente, idTipoReserva, comprobante, hora } = req.body;
+    
+    // Asegurarse de que todos los campos obligatorios están presentes
+    if (!fechaReserva || !idCancha || !idTipoReserva || !comprobante || !hora) {
+        return res.status(400).json({ error: "Faltan campos obligatorios" });
+    }
+
     try {
         // Crear la reserva utilizando los datos del cuerpo de la solicitud
-        const reservaCreada = await Reserva.create(nuevaReserva);
+        const reservaCreada = await Reserva.create({
+            fechaReserva,
+            idCancha,
+            idCliente: idCliente || null, // Establecer en null si no se proporciona
+            idTipoReserva,
+            comprobante,
+            hora
+        });
+        
         // Devolver el código de estado 201 para indicar que la reserva se ha creado correctamente
         res.status(201).json(reservaCreada);
     } catch (error) {
@@ -40,19 +58,18 @@ export const ReservasPost = async (req, res) => {
     }
 }
 
+
 // METODO PUT
 //Nota: No se olviden de importar el archivo de manejo de errores
-export const ReservasPut = async (reservaPut) => {
+export const ReservasPut = async (req, res) => {
     const id = req.params.id
     const body = req.body
     try {
-        const reservaEditada = req.body;
         const reserva = await Reserva.findOne({
             where: {
-                idReserva: reservaPut.idReserva
+               idReserva: id
             },
-        });
-
+        })
         if (!reserva) {
             throw new ResourceNotFound("Reserva no encontrada");
         }
@@ -60,13 +77,46 @@ export const ReservasPut = async (reservaPut) => {
         await Reserva.update(
             body,
             {
-                where: { idReserva: id}
+                where: { idReserva: id }
             }
         );
 
         res.json("Se ha actualizado correctamente");
-    } catch (error) {
-        console.error(error);
-        throw new Error('Error al actualizar la Reserva');
+    } catch (err) {
+        if (err instanceof ResourceNotFound) {
+            return res.status(404).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
     }
 };
+
+// METODO DELETE
+//Nota: No se olviden de importar el archivo de manejo de errores
+
+export const ReservasDelete = async (req, res) => {
+
+    const id = req.params.id
+    try {
+        const reserva = await Reserva.findOne({
+            where: {
+                idReserva: id
+            },
+        });
+
+        if (!reserva) {
+            throw new ResourceNotFound("Reserva no encontrada");
+        }
+        await Reserva.destroy(
+            { where: { idReserva : id } }
+        )
+        res.json("Se a eliminado correctamente!")
+    }
+    catch (err){
+        if (err instanceof ResourceNotFound) {
+            return res.status(404).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
+    }
+}

@@ -1,22 +1,22 @@
 import { DataTypes } from "sequelize";
 import sequelize from '../../db/db.js';
 
-//Llamo a la tablas que necesito para sus claves, y referenciarlas en esta como clave foreneas
-
+// Importar las tablas necesarias para las claves foráneas
 import Cancha from "./cancha-model.js"; 
-//import Cliente from "./Cliente-model.js"
-import TipoReserva from "./tipoReserva-model.js"
-
-import Cliente from './cliente-model.js'
+import TipoReserva from "./tipoReserva-model.js";
+import Cliente from './cliente-model.js';
 
 const Reserva = sequelize.define("Reserva", {
     idReserva: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         primaryKey: true,
         autoIncrement: true
     },
-    fechaReserva: { type: DataTypes.DATE },
+    fechaReserva: { 
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW
+    },
     idCancha: { 
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -41,43 +41,45 @@ const Reserva = sequelize.define("Reserva", {
             key: 'idTipoReserva'
         }
     },
-    comprobante: { type: DataTypes.TEXT },
-    hora: { type: DataTypes.TIME }
+    comprobante: {
+        type: DataTypes.TEXT,
+        allowNull: false
+    },
+    hora: {
+        type: DataTypes.TIME,
+        allowNull: false
+    }
 }, {
     tableName: "Reserva",
     timestamps: false
 });
 
-   // Definir la relación
-    Cancha.hasMany(Reserva, {
-            foreignKey: 'idCancha',
-            sourceKey: 'idCancha',
-            onDelete: 'CASCADE'
-        });
-  
-    Reserva.belongsTo(Cancha, {
-            foreignKey: 'idCancha',
-            targetKey: 'idCancha',
-        });
-    TipoReserva.hasMany(Reserva, {
-            foreignKey: 'idTipoReserva',
-            sourceKey: 'idTipoReserva',
-            onDelete: 'CASCADE'
-        });
-  
-    Reserva.belongsTo(TipoReserva, {
-            foreignKey: 'idTipoReserva',
-            targetKey: 'idTipoReserva',
-        });
- 
-    Cliente.hasMany(Reserva, {
-            foreignKey: 'idCliente',
-            sourceKey: 'idCliente',
-            onDelete: 'CASCADE'
-        });
-    Reserva.belongsTo(Cliente, {
-            foreignKey: 'idCliente',
-            targetKey: 'idCliente',
-        });
+// Definir las asociaciones
+Cancha.hasMany(Reserva, {
+    foreignKey: 'idCancha',
+    onDelete: 'CASCADE'
+});
 
-export default Reserva; 
+Reserva.belongsTo(Cancha, {
+    foreignKey: 'idCancha',
+});
+
+TipoReserva.hasMany(Reserva, {
+    foreignKey: 'idTipoReserva',
+    onDelete: 'CASCADE'
+});
+
+Reserva.belongsTo(TipoReserva, {
+    foreignKey: 'idTipoReserva',
+});
+
+Cliente.hasMany(Reserva, {
+    foreignKey: 'idCliente',
+    onDelete: 'CASCADE'
+});
+
+Reserva.belongsTo(Cliente, {
+    foreignKey: 'idCliente'
+});
+
+export default Reserva;

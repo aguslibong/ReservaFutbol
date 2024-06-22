@@ -8,21 +8,26 @@ export const TipoReservasGet = async (req, res) => {
     try {
         if (req.params.id) {
             const id = req.params.id;
-            const tipoReservaId = await TipoReserva.findOne({
+            const tipoReserva = await TipoReserva.findOne({
                 where: {
                     idTipoReserva: id
-                }
+                },
             });
-            res.json(tipoReservaId);
+            if (!tipoReserva){
+                throw new ResourceNotFound("Reserva no encontrada")}
+            res.json(tipoReserva);
         } else {
             const respuesta = await TipoReserva.findAll();
             res.json(respuesta);
         }
 
     }
-    catch (error) {
-        console.error('Error al buscar Tipo de Reservas:', error);
-        res.status(500).json({ error: 'Error al buscar Tipo de Reservas' })
+    catch (err) {
+        if (err instanceof ResourceNotFound) {
+            return res.status(404).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
     }
 }
 
@@ -62,8 +67,41 @@ export const TipoReservasPut = async (req, res) => {
             }
         );
         res.json("Se ha actualizado correctamente") 
-    } catch (error) {
-        console.error(error);
-        throw new Error('Error al actualizar la Tipo Reserva');
+    } catch (err) {
+        if (err instanceof ResourceNotFound) {
+            return res.status(404).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
     }
 };
+
+// METODO DELETE
+//Nota: No se olviden de importar el archivo de manejo de errores
+
+export const TipoReservasDelete = async (req, res) => {
+
+    const id = req.params.id
+    try {
+        const Tiporeserva = await TipoReserva.findOne({
+            where: {
+                idTipoReserva: id
+            },
+        });
+
+        if (!Tiporeserva) {
+            throw new ResourceNotFound("Reserva no encontrada");
+        }
+        await TipoReserva.destroy(
+            { where: { idTipoReserva : id } }
+        )
+        res.json("Se a eliminado correctamente!")
+    }
+    catch (err){
+        if (err instanceof ResourceNotFound) {
+            return res.status(404).json({ error: err.message });
+        }
+        console.error(err);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
+    }
+}

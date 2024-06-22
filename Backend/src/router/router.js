@@ -1,8 +1,8 @@
 import express from "express";
 import sequelize from "../../db/db.js"
 import { ResourceNotFound, ValidationError } from '../error/errors.js'; //menejo de errores
-import { Reservas, ReservasPost, ReservasPut } from "../service/reservas/reserva.service.js"
-import { TipoReservasGet, TipoReservasPost, TipoReservasPut } from "../service/reservas/tipoReserva.service.js"
+import { Reservas, ReservasPost, ReservasPut, ReservasDelete } from "../service/reservas/reserva.service.js"
+import { TipoReservasGet, TipoReservasPost, TipoReservasPut, TipoReservasDelete } from "../service/reservas/tipoReserva.service.js"
 import { registrarCancha, getCancha, editarCancha, eliminarCancha } from '../service/canchas/canchas.service.js';
 import { registrarTipoCancha, getTipoCancha, editarTipoCancha, eliminarTipoCancha } from '../service/canchas/tipoCancha.service.js';
 import { registrarCliente, getCliente, editarCliente, eliminarCliente } from '../service/clientes/clientes.service.js';
@@ -24,7 +24,7 @@ router.post('/reserva', ReservasPost)
 // PUT
 router.put('/reserva/:id', ReservasPut)
 //Delete
-
+router.delete('/reserva/:id',ReservasDelete)
 
 
 // router para Tipo de reserva ================================================================================================================
@@ -33,6 +33,7 @@ router.put('/reserva/:id', ReservasPut)
 
 router.get('/tipoReserva', TipoReservasGet)
 router.get('/tipoReserva/:id', TipoReservasGet)
+
 // POST
 
 router.post('/tipoReserva', TipoReservasPost)
@@ -40,6 +41,10 @@ router.post('/tipoReserva', TipoReservasPost)
 // PUT
 
 router.put('/tipoReserva/:id', TipoReservasPut)
+
+//Delete
+router.delete('/tipoReserva/:id', TipoReservasDelete)
+
 
 // router para Canchas ================================================================================================================
 
@@ -146,7 +151,26 @@ router.delete('/tipocancha/:id', async (req, res) => {
 
 // router para Clientes ================================================================================================================
 // GET
+//get
+router.get('/cliente', getCliente);
+router.get('/cliente/:id', getCliente);
 
+//post
+
+router.post('/cliente', registrarCliente)
+
+// router para Clientes ================================================================================================================
+// GET
+//get
+router.get('/tipoDocumento', getTipoDocumento);
+router.get('/tipoDocumento/:id', getTipoDocumento);
+
+//post
+
+router.post('/tipoDocumento', registrarTipoDocumento)
+
+//delete
+router.delete('/tipoDocumento/:id', eliminarTipoDocumento)
 
 export default router;
 

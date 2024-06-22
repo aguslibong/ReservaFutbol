@@ -7,7 +7,6 @@ import { where } from "sequelize";
 // METODO GET
 export const getTipoDocumento = async (req, res) => {
     try {
-        console.log(req.params.id)
         if (req.params.id) {
             const id = req.params.id;
             const tipoDocumento = await TipoDocumento.findOne({
@@ -15,9 +14,11 @@ export const getTipoDocumento = async (req, res) => {
                     idTipoDocumento: id
                 }
             });
+            console.log(tipoDocumento)
             res.json(tipoDocumento);
         } else {
             const tipoDocumento = await TipoDocumento.findAll();
+            console.log(tipoDocumento)
             res.json(tipoDocumento)
         }
 
@@ -75,11 +76,12 @@ export const editarTipoDocumento = async (tipoDocumentoEdit) => {
 };
 
 //METODO DELETE
-export const eliminarTipoDocumento = async (idTipoDocumentoEliminar) => {
+export const eliminarTipoDocumento = async (req, res) => {
+    const id = req.params.id;
     try {
         const tipoDocumento = await TipoDocumento.findOne({
             where: {
-                idTipoDocumento: idTipoDocumentoEliminar
+                idTipoDocumento: id
             }
         })
         if (!tipoDocumento) {
@@ -87,10 +89,10 @@ export const eliminarTipoDocumento = async (idTipoDocumentoEliminar) => {
         }
         await TipoDocumento.destroy({
             where: {
-                idTipoDocumento: idTipoDocumentoEliminar
+                idTipoDocumento: id
             }
         })
-        return { message: 'TipoDocumento eliminada exitosamente' };
+        res.json("Se ha eliminado correctamente");
     }
     catch (error) {
         throw new Error('Error al eliminar la TipoDocumento')
