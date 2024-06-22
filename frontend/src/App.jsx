@@ -6,7 +6,7 @@ import Canchas from "./components/Canchas/Canchas.jsx"
 import Reservas from "./components/Reservas/Reservas.jsx"
 import Clientes from "./components/Clientes/Clientes.jsx"
 import  Inicio  from "./components/Inicio.jsx"
-
+import './App.css'
 
 
 function App() {
