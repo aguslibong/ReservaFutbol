@@ -4,7 +4,7 @@ import Reserva from "../../../src/model/reserva-model.js"
 import { ResourceNotFound, ValidationError } from '../../error/errors.js'; //menejo de errores
 import { where } from "sequelize";
 
-export const Reservas = async (req, res) => {
+export const ReservasGet = async (req, res) => {
     try {
         if (req.params.id) {
             const id = req.params.id;
@@ -32,24 +32,17 @@ export const Reservas = async (req, res) => {
 }
 
 //METODO POST 
-export const registrarReserva = async (reservaNueva) => {
-    console.log(reservaNueva)
+export const ReservaPost = async (req, res) => {
+    const nuevaReserva = req.body;
+    console.log(req.body)
     try {
-        const resultado = await Reserva.create({
-            fechaReserva: reservaNueva.fechaReserva,
-            idCancha: reservaNueva.idCancha,
-            idCliente: reservaNueva.idCliente,
-            idTipoReserva: reservaNueva.idTipoReserva,
-            comprobante: reservaNueva.comprobante,
-            hora: reservaNueva.hora
-        });
-        //console.log('insertar Reserva', resultado);
-        return {
-            id: resultado.dataValues.idReserva
-        };
+        // Crear la reserva utilizando los datos del cuerpo de la solicitud
+        const reservaCreada = await Reserva.create(nuevaReserva);
+        // Devolver el código de estado 201 para indicar que la reserva se ha creado correctamente
+        res.status(201).json(reservaCreada);
     } catch (error) {
-        console.error(error);
-        throw new Error('Error al crear la reserva');
+        // Devolver el código de estado 400 junto con el mensaje de error específico
+        res.status(400).json({ error: error.message });
     }
 };
 
