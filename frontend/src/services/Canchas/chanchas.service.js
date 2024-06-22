@@ -1,35 +1,23 @@
+import axios from 'axios';
+
 const URL = 'http://localhost:3000/api/cancha';
 
-const getCanchas = async() => {
+const getCanchas = async () => {
     try {
-        const res = await fetch(URL);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        console.log(data)
-        return data;
-        
+        const res = await axios.get(URL);
+        return res.data;
     } catch (error) {
         console.error('Error fetching canchas:', error);
         return [];
     }
 }
 
-const saveCanchas = async(canchas) => {
+const saveCanchas = async (canchas) => {
     try {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(canchas)
-        };
-
-        const res = await fetch(URL, requestOptions);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        return data;
+        const res = await axios.post(URL, canchas, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return res.data;
     } catch (error) {
         console.error('Error saving canchas:', error);
         return null;
@@ -37,46 +25,28 @@ const saveCanchas = async(canchas) => {
 }
 
 const deleteCanchas = async (canchas) => {
-    console.log(canchas)
     try {
-        const requestOptions = {
-            method: 'DELETE',
+        const res = await axios.delete(URL, {
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(canchas)
-        };
-
-        const res = await fetch(URL, requestOptions);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        return data;
+            data: canchas
+        });
+        return res.data;
     } catch (error) {
-        console.error('Error Elminando canchas:', error);
+        console.error('Error deleting canchas:', error);
         return null;
     }
 }
 
 const updateCanchas = async (canchas) => {
     try {
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(canchas)
-        };
-
-        const res = await fetch(URL, requestOptions);
-        if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        return data;
+        const res = await axios.put(URL, canchas, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return res.data;
     } catch (error) {
-        console.error('Error Elminando canchas:', error);
+        console.error('Error updating canchas:', error);
         return null;
     }
 }
 
-
-
-export default {getCanchas,saveCanchas,deleteCanchas,updateCanchas}
+export default { getCanchas, saveCanchas, deleteCanchas, updateCanchas };
