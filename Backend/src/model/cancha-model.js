@@ -9,7 +9,7 @@ const Cancha = sequelize.define('Cancha', {
         autoIncrement: true,
     },
     fechaMantenimiento: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         defaultValue: DataTypes.NOW, // Establecer la fecha actual por defecto
     },
