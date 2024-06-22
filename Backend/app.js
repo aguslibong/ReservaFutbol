@@ -1,6 +1,8 @@
 import express from 'express';
 import dbInit from './db/db-init.js';
-import router from './src/router/router.js'; 
+import routerReservas from './src/router/router-Reservas.js'; 
+import routerCanchas from './src/router/router-Canchas.js'; 
+import routerClientes from './src/router/router-Clientes.js'; 
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,7 +12,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Usar rutas
-app.use('/api', router); // Usar el router importado
+app.use('/api', routerReservas); // Usar el router importado
+app.use('/api', routerCanchas)
+app.use('/api', routerClientes)
 
 // Inicializar la base de datos
 dbInit();

@@ -31,32 +31,27 @@ export const Reservas = async (req, res) => {
     }
 }
 
-export const ReservasPost = async (req, res) => {
-    const { fechaReserva, idCancha, idCliente, idTipoReserva, comprobante, hora } = req.body;
-    
-    // Asegurarse de que todos los campos obligatorios están presentes
-    if (!fechaReserva || !idCancha || !idTipoReserva || !comprobante || !hora) {
-        return res.status(400).json({ error: "Faltan campos obligatorios" });
-    }
-
+//METODO POST 
+export const registrarReserva = async (reservaNueva) => {
+    console.log(reservaNueva)
     try {
-        // Crear la reserva utilizando los datos del cuerpo de la solicitud
-        const reservaCreada = await Reserva.create({
-            fechaReserva,
-            idCancha,
-            idCliente: idCliente || null, // Establecer en null si no se proporciona
-            idTipoReserva,
-            comprobante,
-            hora
+        const resultado = await Reserva.create({
+            fechaReserva: reservaNueva.fechaReserva,
+            idCancha: reservaNueva.idCancha,
+            idCliente: reservaNueva.idCliente,
+            idTipoReserva: reservaNueva.idTipoReserva,
+            comprobante: reservaNueva.comprobante,
+            hora: reservaNueva.hora
         });
-        
-        // Devolver el código de estado 201 para indicar que la reserva se ha creado correctamente
-        res.status(201).json(reservaCreada);
+        //console.log('insertar Reserva', resultado);
+        return {
+            id: resultado.dataValues.idReserva
+        };
     } catch (error) {
-        // Devolver el código de estado 400 junto con el mensaje de error específico
-        res.status(400).json({ error: error.message });
+        console.error(error);
+        throw new Error('Error al crear la reserva');
     }
-}
+};
 
 
 // METODO PUT
