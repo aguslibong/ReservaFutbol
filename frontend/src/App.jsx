@@ -1,4 +1,3 @@
-import "./App.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import  Menu  from "./components/Menu";
 import  Footer  from "./components/Footer/Footer.jsx";
@@ -7,7 +6,7 @@ import Canchas from "./components/Canchas/Canchas.jsx"
 import Reservas from "./components/Reservas/Reservas.jsx"
 import Clientes from "./components/Clientes/Clientes.jsx"
 import  Inicio  from "./components/Inicio.jsx"
-
+import './App.css'
 
 
 function App() {
