@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ConsultaCanchas from './Components-Canchas/ConsultaCanchas.jsx';
 import RegistroCanchas from './Components-Canchas/RegistroCanchas.jsx';
-import service from '../../services/Canchas/chanchas.service.js'
+import service from '../../services/Canchas/canchas.service.js'
 import { Link }  from 'react-router-dom';
 //import './Canchas.css'
 

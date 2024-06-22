@@ -1,53 +1,52 @@
-import axiosInstance from './axiosConfig';
+import axios from 'axios';
+
 const URL = 'http://localhost:3000/api/tipoReserva';
 
-const getTipoReservas = async (idTipoReserva = '') => {
+const getTipoReservas = async () => {
     try {
-        if (!idTipoReserva) {
-            // Si no hay idTipoReserva, obtener todas las tipoReservas
-            const response = await axiosInstance.get(URL);
-            return response.data || [];
-        } else {
-            // Si hay idTipoReserva, obtener tipoReservas filtradas por idTipoReserva
-            const response = await axiosInstance.get(`${URL}?idTipoReserva=${idTipoReserva}`);
-            return response.data || [];
-        }
+        const res = await axios.get(URL);
+        return res.data;
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error fetching Reserva:', error);
         return [];
     }
-};
+}
 
-const saveTipoReserva = async (tipoReserva) => {
+const saveTipoReservas = async (tipoReserva) => {
     try {
-        console.log("Datos que se van a enviar:", tipoReserva);  // Agregar log aquí
-
-        const response = await axiosInstance.post(URL, tipoReserva);
-        return response.data;
+        const res = await axios.post(URL, tipoReserva, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return res.data;
     } catch (error) {
-        console.error('Error saving tipoReserva:', error);
+        console.error('Error saving canchas:', error);
         return null;
     }
-};
+}
 
-const updateTipoReserva = async (tipoReserva) => {
+const deleteTipoReservas = async (tipoReserva) => {
     try {
-        const response = await axiosInstance.put(`${URL}/${tipoReserva.idTipoReserva}`, tipoReserva);
-        return response.data;
+        const res = await axios.delete(URL, {
+            headers: { 'Content-Type': 'application/json' },
+            data: tipoReserva
+        });
+        return res.data;
     } catch (error) {
-        console.error('Error actualizando tipoReserva:', error);
+        console.error('Error deleting Reserva:', error);
         return null;
     }
-};
+}
 
-const deleteTipoReserva = async (idTipoReserva) => {
+const updateTipoReservas = async (tipoReserva) => {
     try {
-        const response = await axiosInstance.delete(`${URL}/${idTipoReserva}`);
-        return response.data;
+        const res = await axios.put(URL, tipoReserva, {
+            headers: { 'Content-Type': 'application/json' }
+        });
+        return res.data;
     } catch (error) {
-        console.error('Error eliminando tipoReserva:', error);
+        console.error('Error updating Reserva:', error);
         return null;
     }
-};
+}
 
-export { getTipoReservas, saveTipoReserva, updateTipoReserva, deleteTipoReserva };
+export default { getTipoReservas, saveTipoReservas, deleteTipoReservas, updateTipoReservas };

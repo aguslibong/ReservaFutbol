@@ -1,20 +1,20 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:3000/api/reserva';
+const URL = 'http://localhost:3000/api/cliente';
 
-const getReservas = async () => {
+const getClientes = async () => {
     try {
         const res = await axios.get(URL);
         return res.data;
     } catch (error) {
-        console.error('Error fetching Reserva:', error);
+        console.error('Error fetching canchas:', error);
         return [];
     }
 }
 
-const saveReservas = async (reserva) => {
+const saveClientes = async (cliente) => {
     try {
-        const res = await axios.post(URL, reserva, {
+        const res = await axios.post(URL, cliente, {
             headers: { 'Content-Type': 'application/json' }
         });
         return res.data;
@@ -24,29 +24,29 @@ const saveReservas = async (reserva) => {
     }
 }
 
-const deleteReservas = async (reserva) => {
+const deleteClientes = async (cliente) => {
     try {
         const res = await axios.delete(URL, {
             headers: { 'Content-Type': 'application/json' },
-            data: reserva
+            data: cliente
         });
         return res.data;
     } catch (error) {
-        console.error('Error deleting reserva:', error);
+        console.error('Error deleting cliente:', error);
         return null;
     }
 }
 
-const updateReservas = async (reserva) => {
+const updateClientes = async (cliente) => {
     try {
-        const res = await axios.put(URL, reserva, {
+        const res = await axios.put(URL, cliente, {
             headers: { 'Content-Type': 'application/json' }
         });
         return res.data;
     } catch (error) {
-        console.error('Error updating Reserva:', error);
+        console.error('Error updating canchas:', error);
         return null;
     }
 }
 
-export default { getReservas, saveReservas, deleteReservas, updateReservas };
+export default { getClientes, saveClientes, deleteClientes, updateClientes };

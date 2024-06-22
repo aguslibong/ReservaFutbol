@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import tipoCanchasService from '../../../services/Canchas/tipoCanchas.service.js';
-import canchasService from '../../../services/Canchas/chanchas.service.js';
+import canchasService from '../../../services/Canchas/canchas.service.js';
 
 const RegistroCanchas = ({ cancha, setAction, loadData }) => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm({
