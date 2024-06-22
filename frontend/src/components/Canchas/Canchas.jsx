@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ConsultaCanchas from './Components-Canchas/ConsultaCanchas.jsx';
 import RegistroCanchas from './Components-Canchas/RegistroCanchas.jsx';
 import service from '../../services/Canchas/canchas.service.js'
-import { Link }  from 'react-router-dom';
-//import './Canchas.css'
+import './Cancha.css'
 
 
 export default function Canchas() {
@@ -25,13 +24,14 @@ export default function Canchas() {
         setAction('R'); 
     };
 
-    const onModificar = (canchas) => {
-        setSelectedCanchas (canchas)
+    const onModificar = (cancha) => {
+        console.log(cancha)
+        setSelectedCanchas (cancha)
         setAction('M')
     }
 
-    const onDelete = async(canchas) => {
-        await service.deleteCanchas(canchas);
+    const onDelete = async(cancha) => {
+        await service.deleteCanchas(cancha);
         loadData()
     }
 
@@ -39,15 +39,13 @@ export default function Canchas() {
         <div>
             {
                 (action === 'R' || action === 'M')  && (
-                    <RegistroCanchas setAction={setAction} loadData={loadData} canchas={selectedCanchas} />
+                    <RegistroCanchas setAction={setAction} loadData={loadData} cancha={selectedCanchas} />
                 )
             }
             {
                 action === 'C' && (
                     <>
                         <ConsultaCanchas rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} />
-                        <Link to="/inicio" className="btn btn-primary position-absolute bottom-0 start-0 m-3">Menu</Link>
-
                     </>
                     
                 )

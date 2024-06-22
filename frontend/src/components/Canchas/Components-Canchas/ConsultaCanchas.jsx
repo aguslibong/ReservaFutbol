@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Link }  from 'react-router-dom';
 
 const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
 
@@ -25,7 +25,6 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
         </tr>
     )
 
-
     return (
         <div className="container mt-5">
             <div className="p-3 mb-2 bg-primary text-white rounded">
@@ -46,11 +45,13 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
                     {tbody}
                 </tbody>
             </table>
-
-            <button className="btn btn-secondary mt-3" onClick={onRegistrar}>Regitrar Cancha</button>
-
+            <button className="btn btn-secondary mt-3" onClick={onRegistrar}>Registrar Cancha</button> 
+            <div>
+                <Link to="/inicio" className="btn btn-primary m-3">Menu</Link>
+                <Link to="/cancha/tipocancha" className="btn btn-primary m-3">Gestionar TipoCancha</Link>
+            </div>
         </div>
-
+        
     );
 };
 

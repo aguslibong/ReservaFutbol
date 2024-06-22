@@ -13,7 +13,7 @@ const Reserva = sequelize.define("Reserva", {
         autoIncrement: true
     },
     fechaReserva: { 
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         defaultValue: DataTypes.NOW
     },

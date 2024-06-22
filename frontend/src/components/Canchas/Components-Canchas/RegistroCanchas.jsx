@@ -3,15 +3,29 @@ import { useForm } from 'react-hook-form';
 import tipoCanchasService from '../../../services/Canchas/tipoCanchas.service.js';
 import canchasService from '../../../services/Canchas/canchas.service.js';
 
-const RegistroCanchas = ({ cancha, setAction, loadData }) => {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
-    defaultValues: cancha || {}
-  });
+const RegistroCanchas = ({ setAction, loadData, cancha }) => {
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   
   const [tipoCanchas, setTipoCanchas] = useState([]);
 
+  // Efecto para obtener tipos de canchas
+  useEffect(() => {
+    const fetchTipoCanchas = async () => {
+      try {
+        const response = await tipoCanchasService.getTipocanchas();
+        setTipoCanchas(response);
+      } catch (error) {
+        console.error('Error fetching tipoCanchas:', error);
+      }
+    };
+    fetchTipoCanchas();
+  }, []);
+
+
+  // Efecto para setear valores del formulario
   useEffect(() => {
     if (cancha) {
+      console.log('Setting form values:', cancha);
       setValue('idCancha', cancha.idCancha);
       setValue('fechaMantenimiento', cancha.fechaMantenimiento);
       setValue('idTipoCancha', cancha.idTipoCancha);
@@ -20,20 +34,6 @@ const RegistroCanchas = ({ cancha, setAction, loadData }) => {
     }
   }, [cancha, setValue]);
 
-  useEffect(() => {
-    // Función para obtener los datos de la API
-    const fetchTipoCanchas = async () => {
-      try {
-        const response = await tipoCanchasService.getTipocanchas();
-        console.log(response)
-        setTipoCanchas(response);
-      } catch (error) {
-        console.error('Error fetching tipoCanchas:', error);
-      }
-    };
-    fetchTipoCanchas();
-    console.log(tipoCanchas)
-  }, []);
 
   const onSubmit = async (data) => {
     try {
@@ -55,9 +55,8 @@ const RegistroCanchas = ({ cancha, setAction, loadData }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h5>{cancha ? 'Actualizar Cancha' : 'Registro de Cancha'}</h5>
         <div className="form-group">
-          <label htmlFor="idCancha">ID Cancha:</label>
-          <input type="text" className="form-control" id="idCancha" {...register("idCancha", { required: 'Este campo es requerido' })} />
-          {errors.idCancha && <span className='error'>{errors.idCancha.message}</span>}
+          <label htmlFor="idCancha">ID Cancha: no Modificable</label>
+          <input type="text" className="form-control" id="idCancha" readOnly {...register("idCancha")} />
         </div>
         <div className="form-group">
           <label htmlFor="fechaMantenimiento">Fecha Mantenimiento:</label>
@@ -94,3 +93,4 @@ const RegistroCanchas = ({ cancha, setAction, loadData }) => {
 };
 
 export default RegistroCanchas;
+
