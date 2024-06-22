@@ -3,8 +3,10 @@ import dbInit from './db/db-init.js';
 import routerReservas from './src/router/router-Reservas.js'; 
 import routerCanchas from './src/router/router-Canchas.js'; 
 import routerClientes from './src/router/router-Clientes.js'; 
+import cors from 'cors'
 
 const app = express();
+app.use(cors({ origin: 'http://localhost:5173' }));
 const port = process.env.PORT || 3000;
 
 // Middlewares
