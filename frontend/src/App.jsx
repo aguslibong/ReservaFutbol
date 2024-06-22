@@ -7,6 +7,7 @@ import Reservas from "./components/Reservas/Reservas.jsx";
 import Clientes from "./components/Clientes/Clientes.jsx";
 import Inicio from "./components/Inicio.jsx";
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
@@ -16,10 +17,10 @@ function App() {
         <div className="main-content">
           <Routes>
             <Route path="/inicio" element={<Inicio />} />
-            <Route path="/reservas" element={<Reservas />} />
-            <Route path="/canchas" element={<Canchas />} />
-            <Route path="/clientes" element={<Clientes />} />
-            <Route path="/login/:componentFrom" element={<Login />} />
+            <Route path="/reserva" element={<Reservas />} />
+            <Route path="/cancha" element={<Canchas />} />
+            <Route path="/cliente" element={<Clientes />} />
+            <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Routes>
         </div>
