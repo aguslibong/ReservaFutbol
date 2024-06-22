@@ -29,7 +29,7 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
     return (
         <div className="container mt-5">
             <div className="p-3 mb-2 bg-primary text-white rounded">
-                <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>CANCHAS</h2>
+                <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>GESTION CANCHAS</h2>
             </div>
             <table className="table table-bordered">
                 <thead className="bg-light">
