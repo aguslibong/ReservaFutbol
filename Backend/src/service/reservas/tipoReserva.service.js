@@ -1,6 +1,8 @@
 import express from "express";
 import sequelize from "../../../db/db.js"
 import TipoReserva from "../../../src/model/tipoReserva-model.js"
+import { ResourceNotFound, ValidationError } from '../../error/errors.js'; //menejo de errores
+import { where } from "sequelize";
 
 export const TipoReservasGet = async (req, res) => {
     try {
@@ -37,3 +39,31 @@ export const TipoReservasPost = async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 }
+
+
+export const TipoReservasPut = async (req, res) => {
+    const id = req.params.id
+    const body = req.body
+    try {
+        const tiporeserva = await TipoReserva.findOne({
+            where: {
+                idTipoReserva: id
+            },
+        });
+
+        if (!tiporeserva) {
+            throw new ResourceNotFound("Tipo Reserva no encontrada");
+        }
+
+        await TipoReserva.update(
+            body,
+            {
+                where: { idTipoReserva: id}
+            }
+        );
+        res.json("Se ha actualizado correctamente") 
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error al actualizar la Tipo Reserva');
+    }
+};
