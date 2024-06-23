@@ -2,6 +2,7 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import futbolLoyaImage from '../../assets/FutbolLoya.jpeg';
 import './Footer.css';
 
 const Footer = () => {
@@ -21,7 +22,7 @@ const Footer = () => {
             ></iframe>
           </Col>
           <Col md={4} className="footer-title">
-            <h2>CanchasLoya</h2>
+            <img src={futbolLoyaImage} alt="Canchas de Fútbol Loya" style={{ width: '40%', height: 'auto', marginTop: '20px' }} />
           </Col>
           <Col md={4} className="footer-social">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
