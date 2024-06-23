@@ -6,7 +6,6 @@ const getCanchas = async (id) => {
     if (id){
         try {
             const res = await axios.get(`http://localhost:3000/api/cancha/${id}`);
-            console.log(res.data)
             return [res.data];
         } catch (error) {
             console.error('Error fetching canchas:', error);
