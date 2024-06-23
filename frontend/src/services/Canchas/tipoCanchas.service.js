@@ -2,14 +2,25 @@ import axios from 'axios';
 
 const URL = 'http://localhost:3000/api/tipocancha';
 
-const getTipocanchas = async () => {
-    try {
-        const res = await axios.get(URL);
-        return res.data;
-    } catch (error) {
-        console.error('Error fetching tipocanchas:', error);
-        return [];
+const getTipocanchas = async (id) => {
+    if (id){
+        try {
+            const res = await axios.get(`http://localhost:3000/api/tipocancha/${id}`);
+            return [res.data];
+        } catch (error) {
+            console.error('Error fetching tipocanchas:', error);
+            return [];
+        }
+    }else{
+        try {
+            const res = await axios.get(URL);
+            return res.data;
+        } catch (error) {
+            console.error('Error fetching tipocanchas:', error);
+            return [];
+        }
     }
+    
 }
 
 const saveTipocanchas = async (tipocanchas) => {

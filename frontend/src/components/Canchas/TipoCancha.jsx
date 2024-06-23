@@ -14,9 +14,16 @@ export default function TipoCancha() {
         loadData();
     }, []);
     
-    const loadData = async () => {
-        const data = await service.getTipocanchas();
-        setRows(data);
+    const loadData = async (id) => {
+        if (id) {
+            const data = await service.getTipocanchas(id);
+            setRows(data);
+        }
+        else {
+            const data = await service.getTipocanchas(null);
+            setRows(data);
+        }
+        
     };
 
     const onRegistrar = () => {
@@ -35,6 +42,10 @@ export default function TipoCancha() {
         loadData()
     }
 
+    const onBuscar = async(id) => {
+        loadData(id)
+    }
+
     return (
         <div>
             {
@@ -45,7 +56,7 @@ export default function TipoCancha() {
             {
                 action === 'C' && (
                     <>
-                        <ConsultaTipoCancha rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} />
+                        <ConsultaTipoCancha rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} buscarId={onBuscar} />
                     </>
                     
                 )

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId }) => {
+    console.log(rows)
 
     const [inputValue, setInputValue] = useState('');
 
@@ -22,23 +23,30 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
         onModificar(cancha)
     }
 
-    const onClickBuscar = async (IdCancha) => {
+    const onClickBuscar = async () => {
         buscarId(inputValue)
     }
 
-    const tbody = rows.map(e =>
-        <tr key={e.idCancha}>
-            <td>{e.idCancha}</td>
-            <td>{e.fechaMantenimiento}</td>
-            <td>{e.idTipoCancha}</td>
-            <td>{e.descripcion}</td>
-            <td>{e.foto}</td>
-            <td>
-                <button type="button" className="btn btn-secondary me-3" onClick={() => onClickUpdate(e)}>Modificar</button>
-                <button type="button" className="btn btn-danger me-3" onClick={() => onClickDelete(e)}>Eliminar</button>
-            </td>
+    const tbody = (rows[0] !== null) ? (
+        rows.map(e =>
+            <tr key={e.idCancha}>
+                <td>{e.idCancha}</td>
+                <td>{e.fechaMantenimiento}</td>
+                <td>{e.idTipoCancha}</td>
+                <td>{e.descripcion}</td>
+                <td>{e.foto}</td>
+                <td>
+                    <button type="button" className="btn btn-secondary me-3" onClick={() => onClickUpdate(e)}>Modificar</button>
+                    <button type="button" className="btn btn-danger me-3" onClick={() => onClickDelete(e)}>Eliminar</button>
+                </td>
+            </tr>
+        )
+    ) : (
+        <tr>
+            <td colSpan="6" style={{ textAlign: 'center' }}>ID no encontrada</td>
         </tr>
-    )
+    );
+
 
     return (
         <div className="container mt-5">
