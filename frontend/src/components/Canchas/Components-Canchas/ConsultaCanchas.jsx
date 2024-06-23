@@ -16,7 +16,7 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
     };
 
     const onClickDelete = async (cancha) => {
-        onDelete(cancha)
+        onDelete(cancha.idCancha)
     }
 
     const onClickUpdate = async (cancha) => {

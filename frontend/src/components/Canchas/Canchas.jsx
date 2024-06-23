@@ -37,8 +37,8 @@ export default function Canchas() {
         setAction('M')
     }
 
-    const onDelete = async(cancha) => {
-        await service.deleteCanchas(cancha);
+    const onDelete = async(id) => {
+        await service.deleteCanchas(id);
         loadData()
     }
 

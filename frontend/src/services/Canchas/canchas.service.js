@@ -35,11 +35,10 @@ const saveCanchas = async (canchas) => {
     }
 }
 
-const deleteCanchas = async (canchas) => {
+const deleteCanchas = async (id) => {
     try {
-        const res = await axios.delete(URL, {
+        const res = await axios.delete(`http://localhost:3000/api/cancha/${id}`, {
             headers: { 'Content-Type': 'application/json' },
-            data: canchas
         });
         return res.data;
     } catch (error) {

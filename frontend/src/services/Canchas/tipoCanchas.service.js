@@ -35,11 +35,10 @@ const saveTipocanchas = async (tipocanchas) => {
     }
 }
 
-const deleteTipocanchas = async (tipocanchas) => {
+const deleteTipocanchas = async (id) => {
     try {
-        const res = await axios.delete(URL, {
+        const res = await axios.delete(`http://localhost:3000/api/tipocancha/${id}`, {
             headers: { 'Content-Type': 'application/json' },
-            data: tipocanchas
         });
         return res.data;
     } catch (error) {

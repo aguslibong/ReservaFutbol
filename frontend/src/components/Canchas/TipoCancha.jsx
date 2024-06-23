@@ -37,8 +37,8 @@ export default function TipoCancha() {
         setAction('M')
     }
 
-    const onDelete = async(cancha) => {
-        await service.deleteTipocanchas(cancha);
+    const onDelete = async(id) => {
+        await service.deleteTipocanchas(id);
         loadData()
     }
 
