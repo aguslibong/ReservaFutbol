@@ -1,7 +1,18 @@
 import React from 'react';
-import { Link }  from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
+const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId }) => {
+
+    const [inputValue, setInputValue] = useState('');
+
+    const handleInputChange = (event) => {
+        const value = event.target.value;
+        // Verifica que el valor solo contenga dígitos
+        if (/^\d*$/.test(value)) {
+            setInputValue(value);
+        }
+    };
 
     const onClickDelete = async (cancha) => {
         onDelete(cancha)
@@ -9,6 +20,10 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
 
     const onClickUpdate = async (cancha) => {
         onModificar(cancha)
+    }
+
+    const onClickBuscar = async (IdCancha) => {
+        buscarId(inputValue)
     }
 
     const tbody = rows.map(e =>
@@ -30,6 +45,18 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
             <div className="p-3 mb-2 bg-primary text-white rounded">
                 <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>GESTION CANCHAS</h2>
             </div>
+            <div>
+                <label htmlFor="buscarId">Buscar Por ID: </label>
+                <input
+                    type="text"
+                    id="buscarId"
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                />
+                <button onClick={onClickBuscar}>Buscar</button>
+            </div>
             <table className="table table-bordered">
                 <thead className="bg-light">
                     <tr>
@@ -45,13 +72,13 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete }) => {
                     {tbody}
                 </tbody>
             </table>
-            <button className="btn btn-secondary mt-3" onClick={onRegistrar}>Registrar Cancha</button> 
+            <button className="btn btn-secondary mt-3" onClick={onRegistrar}>Registrar Cancha</button>
             <div>
                 <Link to="/inicio" className="btn btn-primary m-3">Menu</Link>
                 <Link to="/cancha/tipocancha" className="btn btn-primary m-3">Gestionar TipoCancha</Link>
             </div>
         </div>
-        
+
     );
 };
 

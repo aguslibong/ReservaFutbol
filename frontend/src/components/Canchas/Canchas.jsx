@@ -14,9 +14,16 @@ export default function Canchas() {
         loadData();
     }, []);
     
-    const loadData = async () => {
-        const data = await service.getCanchas();
-        setRows(data);
+    const loadData = async (id) => {
+        if (id) {
+            const data = await service.getCanchas(id);
+            setRows(data);
+        }
+        else {
+            const data = await service.getCanchas(null);
+            setRows(data);
+        }
+        
     };
 
     const onRegistrar = () => {
@@ -35,6 +42,10 @@ export default function Canchas() {
         loadData()
     }
 
+    const onBuscar = async(id) => {
+        loadData(id)
+    }
+
     return (
         <div>
             {
@@ -45,7 +56,7 @@ export default function Canchas() {
             {
                 action === 'C' && (
                     <>
-                        <ConsultaCanchas rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} />
+                        <ConsultaCanchas rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} buscarId={onBuscar} />
                     </>
                     
                 )

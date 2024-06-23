@@ -2,14 +2,26 @@ import axios from 'axios';
 
 const URL = 'http://localhost:3000/api/cancha';
 
-const getCanchas = async () => {
-    try {
-        const res = await axios.get(URL);
-        return res.data;
-    } catch (error) {
-        console.error('Error fetching canchas:', error);
-        return [];
+const getCanchas = async (id) => {
+    if (id){
+        try {
+            const res = await axios.get(`http://localhost:3000/api/cancha/${id}`);
+            console.log(res.data)
+            return [res.data];
+        } catch (error) {
+            console.error('Error fetching canchas:', error);
+            return [];
+        }
+    }else{
+        try {
+            const res = await axios.get(URL);
+            return res.data;
+        } catch (error) {
+            console.error('Error fetching canchas:', error);
+            return [];
+        }
     }
+    
 }
 
 const saveCanchas = async (canchas) => {
