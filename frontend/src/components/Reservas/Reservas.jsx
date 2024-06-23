@@ -6,6 +6,7 @@ import canchasService from "../../services/Canchas/canchas.service.js";
 import clientesService from "../../services/clientes/clientes.services.js";
 import tipoReservasService from "../../services/reservas/tipoReservas.service.js";
 import { useState, useEffect } from "react";
+import { Link } from 'react-router-dom'
 
 export default function Reservas() {
   const [action, setAction] = useState('C');
@@ -73,7 +74,15 @@ export default function Reservas() {
             clientes={clientes}
             tipoReservas={tipoReservas}
           />
-          <button type="button" style={{display: "flex"}} className="btn btn-secondary" onClick={onAgregarReserva}>Agregar Reserva</button>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
+            <button type="button" style={{ width: 150, background: "green" }} className="btn btn-secondary" onClick={onAgregarReserva}>
+              Agregar Reserva
+            </button>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
+            <Link to="/inicio" className="btn btn-primary m-3">Menu</Link>
+            <Link to="/tipoReserva" className="btn btn-primary m-3">Gestionar Tipo de Reserva</Link>
+          </div>
         </>
       )}
     </>

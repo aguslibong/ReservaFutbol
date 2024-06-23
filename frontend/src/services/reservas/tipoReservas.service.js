@@ -24,11 +24,10 @@ const saveTipoReservas = async (tipoReserva) => {
     }
 }
 
-const deleteTipoReservas = async (tipoReserva) => {
+const deleteTipoReservas = async (idTipoReserva) => {
     try {
-        const res = await axios.delete(URL, {
-            headers: { 'Content-Type': 'application/json' },
-            data: tipoReserva
+        const res = await axios.delete(`${URL}/${idTipoReserva}`, {
+            headers: { 'Content-Type': 'application/json' }
         });
         return res.data;
     } catch (error) {
@@ -36,6 +35,7 @@ const deleteTipoReservas = async (tipoReserva) => {
         return null;
     }
 }
+
 
 const updateTipoReservas = async (tipoReserva) => {
     try {

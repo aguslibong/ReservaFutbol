@@ -24,15 +24,14 @@ const saveReservas = async (reserva) => {
     }
 }
 
-const deleteReservas = async (reserva) => {
+const deleteReservas = async (idReserva) => {
     try {
-        const res = await axios.delete(URL, {
-            headers: { 'Content-Type': 'application/json' },
-            data: reserva
+        const res = await axios.delete(`${URL}/${idReserva}`, {
+            headers: { 'Content-Type': 'application/json' }
         });
         return res.data;
     } catch (error) {
-        console.error('Error deleting reserva:', error);
+        console.error('Error deleting Reserva:', error);
         return null;
     }
 }
