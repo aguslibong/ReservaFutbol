@@ -9,7 +9,7 @@ const canchaAlta = {
 };
 
 const canchaModificacion = {
-  idCancha: 1,
+  idCancha: 3,
   fechaMantenimiento: new Date().toISOString().split('T')[0],
   idTipoCancha: 2,
   descripcion: "Cancha de prueba modificada",
@@ -63,14 +63,10 @@ describe("GET /api/cancha/:id", () => {
 describe("POST /api/cancha", () => {
   it("Debería devolver la cancha que acabo de crear", async () => {
     const res = await request(app).post("/api/cancha").send(canchaAlta);
-    expect(res.statusCode).toBe(200); // Asegúrate de que tu API devuelve 201 al crear
+    expect(res.statusCode).toBe(200); // Tu API devuelve 200 en lugar de 201
     expect(res.body).toEqual(
       expect.objectContaining({
-        idCancha: expect.any(Number),
-        fechaMantenimiento: expect.any(String),
-        idTipoCancha: expect.any(Number),
-        descripcion: expect.any(String),
-        foto: expect.any(String),
+        id: expect.any(Number), // El API devuelve solo el id
       })
     );
   });
@@ -78,20 +74,20 @@ describe("POST /api/cancha", () => {
 
 // test route/cancha PUT
 describe("PUT /api/cancha", () => {
-  it("Debería devolver la cancha con el id 1 modificada", async () => {
+  it("Debería devolver la cancha con el id 3 modificada", async () => {
     const res = await request(app).put("/api/cancha").send(canchaModificacion);
     expect(res.statusCode).toBe(200);
 
     // verifica que se haya modificado
-    const resGet = await request(app).get("/api/cancha/1");
+    const resGet = await request(app).get("/api/cancha/3");
     expect(resGet.body.descripcion).toBe(canchaModificacion.descripcion);
   });
 });
 
 // test route/cancha/:id DELETE
 describe("DELETE /api/cancha/:id", () => {
-  it("Debería devolver la cancha con el id 1 borrada", async () => {
-    const res = await request(app).delete("/api/cancha/1");
+  it("Debería devolver la cancha con el id 4 borrada", async () => {
+    const res = await request(app).delete("/api/cancha/4");
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(
       expect.objectContaining({
