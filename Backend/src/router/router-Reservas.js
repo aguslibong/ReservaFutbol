@@ -39,7 +39,7 @@ router.post('/tipoReserva', TipoReservasPost)
 router.put('/tipoReserva/:id', TipoReservasPut)
 
 //Delete
-router.delete('/tipoReservas/:id', TipoReservasDelete)
+router.delete('/tipoReserva/:id', TipoReservasDelete)
 
 
 export default router;

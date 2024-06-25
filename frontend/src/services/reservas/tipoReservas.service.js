@@ -39,7 +39,7 @@ const deleteTipoReservas = async (idTipoReserva) => {
 
 const updateTipoReservas = async (tipoReserva) => {
     try {
-        const res = await axios.put(URL, tipoReserva, {
+        const res = await axios.put(`${URL}/${tipoReserva.idTipoReserva}`, tipoReserva, {
             headers: { 'Content-Type': 'application/json' }
         });
         return res.data;

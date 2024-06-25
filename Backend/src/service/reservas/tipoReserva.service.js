@@ -83,13 +83,13 @@ export const TipoReservasDelete = async (req, res) => {
 
     const id = req.params.id
     try {
-        const Tiporeserva = await TipoReserva.findOne({
+        const tiporeserva = await TipoReserva.findOne({
             where: {
                 idTipoReserva: id
             },
         });
 
-        if (!Tiporeserva) {
+        if (!tiporeserva) {
             throw new ResourceNotFound("Reserva no encontrada");
         }
         await TipoReserva.destroy(
