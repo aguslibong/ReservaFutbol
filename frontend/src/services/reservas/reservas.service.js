@@ -5,7 +5,7 @@ const URL = 'http://localhost:3000/api/reserva';
 const getReservas = async () => {
     try {
         const res = await axios.get(URL);
-        return res.data
+        return res.data;
     } catch (error) {
         console.error('Error fetching Reserva:', error);
         return [];
@@ -38,9 +38,10 @@ const deleteReservas = async (idReserva) => {
 
 const updateReservas = async (reserva) => {
     try {
-        const res = await axios.put(URL, reserva, {
-            headers: { 'Content-Type': 'application/json' }
+        const res = await axios.put(`${URL}/${reserva.idReserva}`, reserva, {
+            headers: { 'Content-Type': 'application/json' },
         });
+        console.log("res ", res)
         return res.data;
     } catch (error) {
         console.error('Error updating Reserva:', error);

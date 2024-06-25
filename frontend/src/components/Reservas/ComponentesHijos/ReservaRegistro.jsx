@@ -1,4 +1,3 @@
-// ReservaRegistro.jsx
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import reservasService from "../../../services/reservas/reservas.service.js";
@@ -11,17 +10,19 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
 
   useEffect(() => {
     if (reserva) {
-      setValue('idReserva', reserva.idReserva);
-      setValue('fechaReserva', reserva.fechaReserva);
-      setValue('hora', reserva.hora);
-      setValue('idCancha', reserva.idCancha);
-      setValue('idTipoReserva', reserva.idTipoReserva);
-      setValue('idCliente', reserva.idCliente);
-      setValue('comprobante', reserva.comprobante);
+      console.log('Setting form values with reserva:', reserva);
+      setValue("idReserva", reserva.idReserva);
+      setValue("fechaReserva", reserva.fechaReserva);
+      setValue("hora", reserva.hora);
+      setValue("idCancha", reserva.idCancha);
+      setValue("idTipoReserva", reserva.idTipoReserva);
+      setValue("idCliente", reserva.idCliente);
+      setValue("comprobante", reserva.comprobante);
     }
   }, [reserva, setValue]);
 
   const onSubmit = async (data) => {
+    console.log('Form submitted with data:', data);
     if (reserva) {
       const updatedReserva = { ...reserva, ...data };
       await reservasService.updateReservas(updatedReserva);
@@ -54,12 +55,12 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
               const fechaActual = new Date();
               return fechaReserva >= fechaActual || 'La fecha de reserva debe ser mayor o igual a la fecha actual';
             }
-          })} />
+          })} defaultValue={reserva ? reserva.fechaReserva : ''} />
           {errors.fechaReserva && <span className='error'><span className='error-icon'></span>{errors.fechaReserva.message}</span>}
         </div>
         <div className="form-group">
           <label htmlFor="idCancha">Cancha:</label>
-          <select className="form-control" id="idCancha" {...register("idCancha", { required: "Este campo es requerido" })}>
+          <select className="form-control" id="idCancha" {...register("idCancha", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.idCancha : ''}>
             <option value="">Seleccione una Cancha</option>
             {canchas.map(cancha => (
               <option key={cancha.idCancha} value={cancha.idCancha}>{cancha.descripcion}</option>
@@ -69,7 +70,7 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
         </div>
         <div className="form-group">
           <label htmlFor="idTipoReserva">Tipo de Reserva:</label>
-          <select className="form-control" id="idTipoReserva" {...register("idTipoReserva", { required: "Este campo es requerido" })}>
+          <select className="form-control" id="idTipoReserva" {...register("idTipoReserva", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.idTipoReserva : ''}>
             <option value="">Seleccione un Tipo de Reserva</option>
             {tipoReservas.map(tipoReserva => (
               <option key={tipoReserva.idTipoReserva} value={tipoReserva.idTipoReserva}>{tipoReserva.descripcion}</option>
@@ -79,7 +80,7 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
         </div>
         <div className="form-group">
           <label htmlFor="idCliente">Cliente:</label>
-          <select className="form-control" id="idCliente" {...register("idCliente", { required: "Este campo es requerido" })}>
+          <select className="form-control" id="idCliente" {...register("idCliente", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.idCliente : ''}>
             <option value="">Seleccione un Cliente</option>
             {clientes.map(cliente => (
               <option key={cliente.idCliente} value={cliente.idCliente}>{cliente.nombre}</option>
@@ -89,12 +90,12 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
         </div>
         <div className="form-group">
           <label htmlFor="comprobante">Comprobante:</label>
-          <input type="text" className="form-control" id="comprobante" {...register("comprobante", { required: "Este campo es requerido" })} />
+          <input type="text" className="form-control" id="comprobante" {...register("comprobante", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.comprobante : ''} />
           {errors.comprobante && <span className='error'><span className='error-icon'></span>{errors.comprobante.message}</span>}
         </div>
         <div className="form-group">
           <label htmlFor="hora">Hora:</label>
-          <input type="time" className="form-control" id="hora" {...register("hora", { required: "Este campo es requerido" })} />
+          <input type="time" className="form-control" id="hora" {...register("hora", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.hora : ''} />
           {errors.hora && <span className='error'><span className='error-icon'></span>{errors.hora.message}</span>}
         </div>
         <div>
