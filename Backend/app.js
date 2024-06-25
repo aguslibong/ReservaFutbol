@@ -18,6 +18,10 @@ app.use('/api', routerReservas); // Usar el router importado
 app.use('/api', routerCanchas)
 app.use('/api', routerClientes)
 
+app.get("/", (_, res) => {
+    res.send("Servidor iniciado y escuchando ...")
+})
+
 // Inicializar la base de datos
 dbInit();
 
@@ -31,3 +35,4 @@ app.listen(port, () => {
     console.log(`Servidor escuchando en el puerto ${port}`);
 });
 
+export default app
