@@ -5,7 +5,7 @@ const URL = 'http://localhost:3000/api/reserva';
 const getReservas = async () => {
     try {
         const res = await axios.get(URL);
-        return res.data;
+        return res.data
     } catch (error) {
         console.error('Error fetching Reserva:', error);
         return [];

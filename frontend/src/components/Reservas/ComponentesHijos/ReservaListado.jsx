@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
+import React from "react";
+import Table from 'react-bootstrap/Table';
+import Pagination from 'react-bootstrap/Pagination';
+import Alert from 'react-bootstrap/Alert';
 
-export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, canchas, clientes, tipoReservas }) {
+export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, canchas, clientes, tipoReservas, totalPages, currentPage, handlePageChange, searchForm, showAlert, setShowAlert }) {
     const getNombreCancha = (idCancha) => {
         const cancha = canchas.find(cancha => cancha.idCancha === idCancha);
         return cancha ? cancha.descripcion : '';
@@ -18,34 +21,40 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
 
     const onClickModificar = (reserva) => {
         onModificarReserva(reserva);
-    }
+    };
 
     const onClickEliminar = (reserva) => {
         onEliminarReserva(reserva);
-    }
+    };
 
     if (!rows || rows.length === 0) {
         return (
             <div className="container mt-5">
                 <div className="header-container p-3 mb-2 bg-primary text-white rounded d-flex justify-content-between align-items-center">
                     <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>RESERVAS</h2>
+                    {searchForm}
                 </div>
-                <table className="table table-bordered">
-                    <thead className="bg-light">
+                {showAlert && (
+                  <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
+                    No se encontró una reserva con el ID proporcionado.
+                  </Alert>
+                )}
+                <Table responsive>
+                    <thead>
                         <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Fecha Reserva</th>
-                            <th scope="col">Hora</th>
-                            <th scope="col">Cancha</th>
-                            <th scope="col">Cliente</th>
-                            <th scope="col">Tipo Reserva</th>
-                            <th scope="col">Comprobante</th>
-                            <th scope="col">Acciones</th>
+                            <th>Id</th>
+                            <th>Fecha Reserva</th>
+                            <th>Hora</th>
+                            <th>Cancha</th>
+                            <th>Cliente</th>
+                            <th>Tipo Reserva</th>
+                            <th>Comprobante</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                     </tbody>
-                </table>
+                </Table>
             </div>
         );
     }
@@ -66,29 +75,50 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
         </tr>
     ));
 
+    const renderPageNumbers = () => {
+        let items = [];
+        for (let number = 1; number <= totalPages; number++) {
+            items.push(
+                <Pagination.Item key={number} active={number === currentPage} onClick={() => handlePageChange(number)}>
+                    {number}
+                </Pagination.Item>,
+            );
+        }
+        return items;
+    };
+
     return (
         <div className="container mt-5">
             <div className="header-container p-3 mb-2 bg-primary text-white rounded d-flex justify-content-between align-items-center">
-                <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>RESERVAS</h2>
+                <h2 className="mb-0" style={{ fontFamily: 'monospace', marginRight: 20 }}>RESERVAS</h2>
+                {searchForm}
             </div>
+            {showAlert && (
+              <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
+                No se encontró una reserva con el ID proporcionado.
+              </Alert>
+            )}
             <div className="table-container">
-                <table className="table table-bordered">
-                    <thead className="bg-light">
+                <Table responsive>
+                    <thead>
                         <tr>
-                            <th scope="col">Id</th>
-                            <th scope="col">Fecha Reserva</th>
-                            <th scope="col">Hora</th>
-                            <th scope="col">Cancha</th>
-                            <th scope="col">Cliente</th>
-                            <th scope="col">Tipo Reserva</th>
-                            <th scope="col">Comprobante</th>
-                            <th scope="col">Acciones</th>
+                            <th>Id</th>
+                            <th>Fecha Reserva</th>
+                            <th>Hora</th>
+                            <th>Cancha</th>
+                            <th>Cliente</th>
+                            <th>Tipo Reserva</th>
+                            <th>Comprobante</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {tbody}
                     </tbody>
-                </table>
+                </Table>
+                <div className="pagination">
+                    <Pagination>{renderPageNumbers()}</Pagination>
+                </div>
             </div>
         </div>
     );
