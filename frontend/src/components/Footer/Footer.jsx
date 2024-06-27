@@ -26,24 +26,18 @@ const Footer = () => {
               <p>Email: canchasLoya@gmail.com</p>
               <p>Dirección: Ramón Cárcano, Córdoba, Argentina</p>
               <p className='pCopy'>&copy; 2024 - 2025 Canchas Loya. Todos los derechos reservados.</p>
-              <p>Dirección: Calle av. Colón 12, Córdoba, Argentina</p>
             </div>
           </Col>
           <Col md={4} className="footer-social">
             <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-              <FaFacebook size={30} />
+              <FaFacebook size={40} />
             </a>
             <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-              <FaTwitter size={30} />
+              <FaTwitter size={40} />
             </a>
             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-              <FaInstagram size={30} />
+              <FaInstagram size={40} />
             </a>
-          </Col>
-        </Row>
-        <Row>
-          <Col className="text-center mt-3">
-            <p>&copy; 2024 - 2025 Canchas Loya. Todos los derechos reservados.</p>
           </Col>
         </Row>
       </Container>

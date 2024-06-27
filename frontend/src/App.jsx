@@ -1,15 +1,13 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Menu from "./components/Menu";
-import Footer from "./components/Footer/Footer.jsx";
-import Login from "./components/Login.jsx";
-import Canchas from "./components/Canchas/Canchas.jsx";
+import Menu from './components/Menu';
+import Footer from './components/Footer/Footer.jsx';
+import Login from './components/Login.jsx';
+import Canchas from './components/Canchas/Canchas.jsx';
 import TipoCancha from './components/Canchas/TipoCancha.jsx'
 import Reservas from './components/Reservas/Reservas.jsx'
-import TipoReservas from './components/Reservas/TipoReservas.jsx'
+import TipoReservas from './components/Reservas/tipoReservas.jsx'
 import Clientes from './components/Clientes/Clientes.jsx'
 import Inicio from './components/Inicio.jsx'
-
-
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
