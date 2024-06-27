@@ -1,14 +1,19 @@
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import React from 'react';
 import { NavLink } from 'react-router-dom';
+import futbolLoyaImage from '../assets/FutbolLoya.jpeg';
+import './Menu.css'; // Importa el archivo CSS
 
 function Menu() {
   return (
-    <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+    <Navbar collapseOnSelect expand="lg" className="custom-navbar"> {/* Usa la clase personalizada */}
       <Container>
-        <Navbar.Brand as={NavLink} to="/inicio">Canchas Loya</Navbar.Brand>
+        <div className="navbar-brand-container">
+          <img src={futbolLoyaImage} alt="Canchas de Fútbol Loya" className="navbar-brand-image" />
+          <Navbar.Brand as={NavLink} to="/inicio">Canchas Loya</Navbar.Brand>
+        </div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
