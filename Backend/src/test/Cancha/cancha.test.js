@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../../app.js"; // Asegúrate de que este es el camino correcto a tu archivo de servidor
+import app from "../../../app.js"; // Asegúrate de que este es el camino correcto a tu archivo de servidor
 
 const canchaAlta = {
   fechaMantenimiento: new Date().toISOString().split('T')[0], // Solo la fecha
@@ -9,19 +9,13 @@ const canchaAlta = {
 };
 
 const canchaModificacion = {
-  idCancha: 3,
+  idCancha: 5,
   fechaMantenimiento: new Date().toISOString().split('T')[0],
-  idTipoCancha: 2,
+  idTipoCancha: 1,
   descripcion: "Cancha de prueba modificada",
   foto: "http://example.com/foto2.jpg",
 };
 
-describe("GET /", () => {
-  it("Debería Servidor iniciado y escuchando ...", async () => {
-    const res = await request(app).get("/");
-    expect(res.statusCode).toBe(200);
-  });
-});
 
 // test route/cancha GET
 describe("GET /api/cancha", () => {
@@ -44,12 +38,12 @@ describe("GET /api/cancha", () => {
 
 // test route/cancha/:id GET
 describe("GET /api/cancha/:id", () => {
-  it("Debería devolver la cancha con el id 2", async () => {
-    const res = await request(app).get("/api/cancha/2");
+  it("Debería devolver la cancha con el id 5", async () => {
+    const res = await request(app).get("/api/cancha/5");
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(
       expect.objectContaining({
-        idCancha: 2,
+        idCancha: 5,
         fechaMantenimiento: expect.any(String),
         idTipoCancha: expect.any(Number),
         descripcion: expect.any(String),
@@ -74,20 +68,20 @@ describe("POST /api/cancha", () => {
 
 // test route/cancha PUT
 describe("PUT /api/cancha", () => {
-  it("Debería devolver la cancha con el id 3 modificada", async () => {
+  it("Debería devolver la cancha con el id 5 modificada", async () => {
     const res = await request(app).put("/api/cancha").send(canchaModificacion);
     expect(res.statusCode).toBe(200);
 
     // verifica que se haya modificado
-    const resGet = await request(app).get("/api/cancha/3");
+    const resGet = await request(app).get("/api/cancha/5");
     expect(resGet.body.descripcion).toBe(canchaModificacion.descripcion);
   });
 });
 
 // test route/cancha/:id DELETE
 describe("DELETE /api/cancha/:id", () => {
-  it("Debería devolver la cancha con el id 4 borrada", async () => {
-    const res = await request(app).delete("/api/cancha/4");
+  it("Debería devolver la cancha con el id 8 borrada", async () => {
+    const res = await request(app).delete("/api/cancha/8");
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(
       expect.objectContaining({

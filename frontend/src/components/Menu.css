@@ -1,0 +1,39 @@
+/* Menu.css */
+
+.custom-navbar {
+    background-color: #333 !important; 
+  }
+  
+  .custom-navbar .navbar-brand,
+  .custom-navbar .nav-link {
+    color: #fff !important; 
+  }
+  
+  .custom-navbar .navbar-nav .nav-link {
+    margin-left: 10px; 
+  }
+  
+/* Estilos personalizados para el Navbar */
+
+.custom-navbar {
+  background-color: #f8f9fa; /* Cambia el color de fondo si es necesario */
+}
+
+.navbar-brand-container {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand-image {
+  width: 30px;
+  height: auto;
+  margin-right: 10px; /* Espacio entre la imagen y el texto */
+}
+
+.nav-link {
+  color: #000; /* Color del texto del enlace */
+}
+
+.nav-link:hover {
+  color: #0056b3; /* Color del texto del enlace al pasar el mouse */
+}

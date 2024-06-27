@@ -12,7 +12,7 @@ const reservaAlta = {
 };
 
 const reservaModificacion = {
-  idReserva: 27,
+  idReserva: 43,
   fechaReserva: new Date().toISOString().split('T')[0],
   idCancha: 2,
   idCliente: 2,
@@ -44,8 +44,8 @@ describe('GET /api/reserva', () => {
 
 // Test GET /api/reserva/:id
 describe('GET /api/reserva/:id', () => {
-  it('Deberia devolver la reserva con el id 27', async () => {
-    const res = await request(app).get('/api/reserva/27');
+  it('Deberia devolver la reserva con el id 43', async () => {
+    const res = await request(app).get('/api/reserva/43');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(
       expect.objectContaining({
@@ -135,8 +135,8 @@ describe('PUT /api/reserva/:id', () => {
 
 // Test DELETE /api/reserva/:id
 describe('DELETE /api/reserva/:id', () => {
-  it('Deberia borrar la reserva con el id 27', async () => {
-    const res = await request(app).delete('/api/reserva/27');
+  it('Deberia borrar la reserva con el id 43', async () => {
+    const res = await request(app).delete('/api/reserva/43');
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual('Se a eliminado correctamente!');
   });

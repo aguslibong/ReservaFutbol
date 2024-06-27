@@ -1,7 +1,8 @@
 .footer {
-  background-color: #f8f9fa;
-  padding: 20px 0;
-  height: 10%;
+  background-color: #333;
+  padding: 10px 0; 
+  height: auto; 
+  color: white;
 }
 
 .footer-map {
@@ -13,11 +14,14 @@
 }
 
 .footer-social {
-  text-align: center;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
 }
 
-.footer .contact-info {
-  margin-top: 20px;
+.footer .contact-info p {
+  /*margin-top: 1px;*/ 
+  margin-bottom: 5px; 
 }
 
 .footer .footer-social a {
@@ -26,4 +30,12 @@
 
 .footer .text-center {
   text-align: center;
+  font-size: 12px;
 }
+
+.pCopy {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 11px;
+}
+
