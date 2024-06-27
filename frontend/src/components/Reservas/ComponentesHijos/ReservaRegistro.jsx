@@ -83,13 +83,13 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
           <select className="form-control" id="idCliente" {...register("idCliente", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.idCliente : ''}>
             <option value="">Seleccione un Cliente</option>
             {clientes.map(cliente => (
-              <option key={cliente.idCliente} value={cliente.idCliente}>{cliente.nombre}</option>
+              <option key={cliente.idCliente} value={cliente.idCliente}>{cliente.nroDoc}</option>
             ))}
           </select>
           {errors.idCliente && <span className='error'><span className='error-icon'></span>{errors.idCliente.message}</span>}
         </div>
         <div className="form-group">
-          <label htmlFor="comprobante">Comprobante:</label>
+          <label htmlFor="comprobante">Observacion:</label>
           <input type="text" className="form-control" id="comprobante" {...register("comprobante", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.comprobante : ''} />
           {errors.comprobante && <span className='error'><span className='error-icon'></span>{errors.comprobante.message}</span>}
         </div>

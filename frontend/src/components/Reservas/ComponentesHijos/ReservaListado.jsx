@@ -9,9 +9,9 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
         return cancha ? cancha.descripcion : '';
     };
 
-    const getNombreCliente = (idCliente) => {
+    const getDocCliente = (idCliente) => {
         const cliente = clientes.find(cliente => cliente.idCliente === idCliente);
-        return cliente ? cliente.nombre : '';
+        return cliente ? cliente.nroDoc : '';
     };
 
     const getDescripcionTipoReserva = (idTipoReserva) => {
@@ -35,9 +35,9 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
                     {searchForm}
                 </div>
                 {showAlert && (
-                  <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-                    No se encontró una reserva con el ID proporcionado.
-                  </Alert>
+                    <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
+                        No se encontró una reserva con la Observacion proporcionada.
+                    </Alert>
                 )}
                 <Table responsive>
                     <thead>
@@ -46,9 +46,9 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
                             <th>Fecha Reserva</th>
                             <th>Hora</th>
                             <th>Cancha</th>
-                            <th>Cliente</th>
+                            <th>Documento Cliente</th>
                             <th>Tipo Reserva</th>
-                            <th>Comprobante</th>
+                            <th>Observación</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -65,7 +65,7 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
             <td>{reserva.fechaReserva}</td>
             <td>{reserva.hora}</td>
             <td>{getNombreCancha(reserva.idCancha)}</td>
-            <td>{getNombreCliente(reserva.idCliente)}</td>
+            <td>{getDocCliente(reserva.idCliente)}</td>
             <td>{getDescripcionTipoReserva(reserva.idTipoReserva)}</td>
             <td>{reserva.comprobante}</td>
             <td>
@@ -94,9 +94,9 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
                 {searchForm}
             </div>
             {showAlert && (
-              <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-                No se encontró una reserva con el ID proporcionado.
-              </Alert>
+                <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
+                    No se encontró una reserva con la observacion proporcionada.
+                </Alert>
             )}
             <div className="table-container">
                 <Table responsive>
@@ -106,9 +106,9 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
                             <th>Fecha Reserva</th>
                             <th>Hora</th>
                             <th>Cancha</th>
-                            <th>Cliente</th>
+                            <th>Documento Cliente</th>
                             <th>Tipo Reserva</th>
-                            <th>Comprobante</th>
+                            <th>Observacion</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>

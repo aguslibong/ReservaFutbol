@@ -15,6 +15,7 @@ export const TipoReservasGet = async (req, res) => {
             });
             if (!tipoReserva){
                 throw new ResourceNotFound("Reserva no encontrada")}
+            
             res.json(tipoReserva);
         } else {
             const respuesta = await TipoReserva.findAll();
@@ -66,7 +67,7 @@ export const TipoReservasPut = async (req, res) => {
                 where: { idTipoReserva: id}
             }
         );
-        res.json("Se ha actualizado correctamente") 
+        res.status(204).json("Se ha actualizado correctamente") 
     } catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
@@ -95,7 +96,7 @@ export const TipoReservasDelete = async (req, res) => {
         await TipoReserva.destroy(
             { where: { idTipoReserva : id } }
         )
-        res.json("Se a eliminado correctamente!")
+        res.status(204).json("Se a eliminado correctamente!")
     }
     catch (err){
         if (err instanceof ResourceNotFound) {

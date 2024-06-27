@@ -1,40 +1,61 @@
 import express from "express";
-import sequelize from "../../../db/db.js"
-import Reserva from "../../../src/model/reserva-model.js"
+import sequelize from "../../../db/db.js";
+import Reserva from "../../../src/model/reserva-model.js";
 import { ResourceNotFound, ValidationError } from '../../error/errors.js'; //menejo de errores
-import { where } from "sequelize";
+import { Op } from "sequelize";
 
 export const ReservasGet = async (req, res) => {
     try {
-        if (req.params.id) {
-            const id = req.params.id;
-            const reserva = await Reserva.findOne({
+        const { comprobante } = req.query;
+        let reservas;
+        if (comprobante) {
+            reservas = await Reserva.findAll({
                 where: {
-                    idReserva: id
-                },
+                    comprobante: {
+                        [Op.like]: `%${comprobante}%`
+                    }
+                }
             });
-            if (!reserva){
-                throw new ResourceNotFound("Reserva no encontrada")}
-            res.json(reserva);
+
+            if (reservas.length === 0) {
+                throw new ResourceNotFound("No se encontraron reservas con el comprobante proporcionado");
+            }
+            res.status(200).json(reservas);
         } else {
             const respuesta = await Reserva.findAll();
-            res.json(respuesta);
+            res.status(200).json(respuesta);
         }
 
-    }
-    catch (err) {
+    } catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
         }
         console.error(err);
-        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
     }
-}
+};
 
-//METODO POST 
+export const ReservasGetById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const reserva = await Reserva.findOne({ where: { idReserva: id } });
+        if (!reserva) {
+            throw new ResourceNotFound("Reserva no encontrada");
+        }
+        res.status(200).json(reserva);
+    } catch (error) {
+        if (error instanceof ResourceNotFound) {
+            return res.status(404).json({ error: error.message });
+        }
+        console.error('Error al obtener la reserva:', error);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
+    }
+};
+
+// METODO POST 
 export const ReservaPost = async (req, res) => {
     const nuevaReserva = req.body;
-    console.log(req.body)
+    console.log(req.body);
     try {
         // Crear la reserva utilizando los datos del cuerpo de la solicitud
         const reservaCreada = await Reserva.create(nuevaReserva);
@@ -46,18 +67,16 @@ export const ReservaPost = async (req, res) => {
     }
 };
 
-
 // METODO PUT
-//Nota: No se olviden de importar el archivo de manejo de errores
 export const ReservasPut = async (req, res) => {
-    const id = req.params.id
-    const body = req.body
+    const id = req.params.id;
+    const body = req.body;
     try {
         const reserva = await Reserva.findOne({
             where: {
-               idReserva: id
+                idReserva: id
             },
-        })
+        });
         if (!reserva) {
             throw new ResourceNotFound("Reserva no encontrada");
         }
@@ -69,7 +88,7 @@ export const ReservasPut = async (req, res) => {
             }
         );
 
-        res.json("Se ha actualizado correctamente");
+        res.status(204).json("Se ha actualizado correctamente");
     } catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
@@ -80,11 +99,8 @@ export const ReservasPut = async (req, res) => {
 };
 
 // METODO DELETE
-//Nota: No se olviden de importar el archivo de manejo de errores
-
 export const ReservasDelete = async (req, res) => {
-
-    const id = req.params.id
+    const id = req.params.id;
     try {
         const reserva = await Reserva.findOne({
             where: {
@@ -96,15 +112,14 @@ export const ReservasDelete = async (req, res) => {
             throw new ResourceNotFound("Reserva no encontrada");
         }
         await Reserva.destroy(
-            { where: { idReserva : id } }
-        )
-        res.json("Se a eliminado correctamente!")
-    }
-    catch (err){
+            { where: { idReserva: id } }
+        );
+        res.status(204).json("Se ha eliminado correctamente!");
+    } catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
         }
         console.error(err);
-        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
     }
-}
+};

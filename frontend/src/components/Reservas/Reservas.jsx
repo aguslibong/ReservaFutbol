@@ -24,20 +24,21 @@ export default function Reservas() {
   const { handleSubmit, register } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!data.idReserva) {
+    if (!data.comprobante) {
       setShowAlert(false);
       setCurrentPage(1);
       return loadData();
     }
-    const reservaFiltrada = (await reservasService.getReservas()).find((reserva) => reserva.idReserva === parseInt(data.idReserva));
-    const filteredData = reservaFiltrada ? [reservaFiltrada] : [];
+    console.log(data.comprobante)
+    const reservaFiltrada = await reservasService.getReservas(data.comprobante);
 
-    if (filteredData.length === 0) {
+    if (!Array.isArray(reservaFiltrada) || reservaFiltrada.length === 0) {
       setShowAlert(true);
       return loadData();
     } else {
+      console.log("Entre acá!")
       setCurrentPage(1);
-      setRows(filteredData);
+      setRows(reservaFiltrada); // Directamente usa reservaFiltrada en lugar de envolverlo en un array.
       setShowAlert(false);
     }
   });
@@ -91,9 +92,9 @@ export default function Reservas() {
     <form onSubmit={onSubmit} className="d-flex">
       <input
         type="text"
-        {...register("idReserva")}
+        {...register("comprobante")}
         className="form-control"
-        placeholder="Buscar por id de reserva"
+        placeholder="Buscar por Observacion"
         aria-label="Example text with button addon"
         aria-describedby="button-addon1"
       />

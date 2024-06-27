@@ -1,7 +1,7 @@
 import express from "express";
 import sequelize from "../../db/db.js"
 import { ResourceNotFound, ValidationError } from '../error/errors.js'; //menejo de errores
-import { ReservasGet, ReservaPost, ReservasPut, ReservasDelete } from "../service/reservas/reserva.service.js"
+import { ReservasGet, ReservaPost, ReservasPut, ReservasDelete, ReservasGetById } from "../service/reservas/reserva.service.js"
 import { TipoReservasGet, TipoReservasPost, TipoReservasPut, TipoReservasDelete } from "../service/reservas/tipoReserva.service.js"
 
 
@@ -11,7 +11,7 @@ const router = express.Router();
 // router para Reservas ================================================================================================================
 //get
 router.get('/reserva', ReservasGet);
-router.get('/reserva/:id', ReservasGet);
+router.get('/reserva/:id', ReservasGetById);
 
 //post
 
