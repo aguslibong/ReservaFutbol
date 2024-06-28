@@ -9,9 +9,7 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
 
     const handleInputChange = (event) => {
         const value = event.target.value;
-        if (/^\d*$/.test(value)) {
-            setInputValue(value);
-        }
+        setInputValue(value)
     };
 
     const onClickDelete = async (cancha) => {
@@ -57,16 +55,15 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
             </Row>
             <Row className="mb-3">
                 <Col>
-                    <label htmlFor="buscarId">Buscar Por ID: </label>
+                    <label htmlFor="buscarId" className='label m-2'>Buscar Por Descripcion: </label>
                     <input
                         type="text"
                         id="buscarId"
                         value={inputValue}
                         onChange={handleInputChange}
-                        inputMode="numeric"
-                        pattern="[0-9]*"
+                        inputMode="text"
                     />
-                    <Button variant="primary" className="ms-2" onClick={onClickBuscar}>Buscar</Button>
+                    <Button variant="primary" className="m-3" onClick={onClickBuscar}>Buscar</Button>
                 </Col>
             </Row>
             <Row>

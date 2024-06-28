@@ -9,10 +9,10 @@ export const getCancha = async (req, res) => {
     try {
         console.log(req.params.id)
         if (req.params.id) {
-            const id = req.params.id;
+            const desc = req.params.id;
             const cancha= await Cancha.findOne({
                 where: {
-                    idCancha: id
+                    descripcion: desc
                 }
             });
             res.json(cancha);
