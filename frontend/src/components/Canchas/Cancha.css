@@ -129,3 +129,10 @@ button {
   margin-top: 10px;
 }
 
+.fotoCancha{
+  display: flex;
+  align-items: center;
+  width: 140px;
+  height: 100px;
+  margin: 5px;
+}

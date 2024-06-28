@@ -11,3 +11,27 @@
 .table-container {
     overflow-x: auto;
 }
+
+.fotoCancha {
+    display: flex;
+    align-items: center;
+    width: 140px;
+    height: 100px;
+    margin: 5px;
+}
+
+.slick-slide > div {
+    margin: 0 10px;
+    align-items: center;
+    text-align: center;
+}
+
+.custom-card {
+    width: 12rem; /* Ajusta el tamaño de las tarjetas aquí */
+  }
+  
+  .custom-card img {
+    height: 8rem; /* Ajusta la altura de las imágenes aquí */
+    object-fit: cover; /* Asegúrate de que las imágenes se ajusten bien dentro del contenedor */
+  }
+  
