@@ -31,7 +31,9 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
                 <td>{e.fechaMantenimiento}</td>
                 <td>{e.idTipoCancha}</td>
                 <td>{e.descripcion}</td>
-                <td>{e.foto}</td>
+                <td>
+                    <img className="fotoCancha" src={e.foto} alt={e.descripcion} />
+                </td>
                 <td>
                     <Button variant="secondary" className="me-3" onClick={() => onClickUpdate(e)}>Modificar</Button>
                     <Button variant="danger" className="me-3" onClick={() => onClickDelete(e)}>Eliminar</Button>
