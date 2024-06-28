@@ -36,7 +36,6 @@ export default function Reservas() {
       setShowAlert(true);
       return loadData();
     } else {
-      console.log("Entre acá!")
       setCurrentPage(1);
       setRows(reservaFiltrada); // Directamente usa reservaFiltrada en lugar de envolverlo en un array.
       setShowAlert(false);
@@ -76,8 +75,19 @@ export default function Reservas() {
 
   const onEliminarReserva = async (reserva) => {
     await reservasService.deleteReservas(reserva.idReserva);
-    loadData();
+    const updatedData = await reservasService.getReservas();
+    
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = updatedData.slice(indexOfFirstItem, indexOfLastItem);
+    
+    if (currentItems.length === 0 && currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  
+    setRows(updatedData);
   };
+  
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -86,7 +96,9 @@ export default function Reservas() {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+    loadData();
   };
+  
 
   const searchForm = (
     <form onSubmit={onSubmit} className="d-flex">

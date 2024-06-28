@@ -56,7 +56,17 @@ export default function TipoReservas() {
 
     const onEliminarTipoReserva = async (tipoReserva) => {
         await tipoReservasService.deleteTipoReservas(tipoReserva.idTipoReserva);
-        loadData();
+        const updatedData = await tipoReservasService.getTipoReservas();
+
+        const indexOfLastItem = currentPage * itemsPerPage;
+        const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+        const currentItems = updatedData.slice(indexOfFirstItem, indexOfLastItem);
+        
+        if (currentItems.length === 0 && currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+      
+        setRows(updatedData);
     };
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -64,9 +74,10 @@ export default function TipoReservas() {
     const currentItems = rows.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(rows.length / itemsPerPage);
 
-    const handlePageChange = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    loadData();
+  };
 
     const searchForm = (
         <form onSubmit={onSubmit} className="d-flex">

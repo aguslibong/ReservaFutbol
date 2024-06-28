@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import reservasService from "../../../services/reservas/reservas.service.js";
-import canchasService from "../../../services/Canchas/canchas.service.js";
-import clientesService from "../../../services/clientes/clientes.services.js";
-import tipoReservasService from "../../../services/reservas/tipoReservas.service.js";
 
 export default function ReservaRegistro({ setAction, loadData, reserva, canchas, clientes, tipoReservas }) {
-  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm();
 
   useEffect(() => {
     if (reserva) {
-      console.log('Setting form values with reserva:', reserva);
       setValue("idReserva", reserva.idReserva);
       setValue("fechaReserva", reserva.fechaReserva);
       setValue("hora", reserva.hora);
@@ -22,7 +18,6 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
   }, [reserva, setValue]);
 
   const onSubmit = async (data) => {
-    console.log('Form submitted with data:', data);
     if (reserva) {
       const updatedReserva = { ...reserva, ...data };
       await reservasService.updateReservas(updatedReserva);
@@ -51,8 +46,9 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
               message: 'Este campo es requerido'
             },
             validate: (value) => {
-              const fechaReserva = new Date(value);
+              const fechaReserva = new Date(value); 
               const fechaActual = new Date();
+              console.log("Fecha hoy:", fechaActual, "Fecha Reserva:", fechaReserva)
               return fechaReserva >= fechaActual || 'La fecha de reserva debe ser mayor o igual a la fecha actual';
             }
           })} defaultValue={reserva ? reserva.fechaReserva : ''} />
@@ -95,7 +91,19 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
         </div>
         <div className="form-group">
           <label htmlFor="hora">Hora:</label>
-          <input type="time" className="form-control" id="hora" {...register("hora", { required: "Este campo es requerido" })} defaultValue={reserva ? reserva.hora : ''} />
+          <input type="time" className="form-control" id="hora" {...register("hora", {
+            required: "Este campo es requerido",
+            validate: (value) => {
+              const selectedDate = new Date(getValues("fechaReserva"));
+              const today = new Date();
+              if (selectedDate.setHours(0, 0, 0, 0) === today.setHours(0, 0, 0, 0)) {
+                const selectedTime = new Date(`1970-01-01T${value}:00`);
+                const currentTime = new Date(`1970-01-01T${today.getHours()}:${today.getMinutes()}:00`);
+                return selectedTime > currentTime || 'La hora de reserva debe ser mayor a la hora actual';
+              }
+              return true;
+            }
+          })} defaultValue={reserva ? reserva.hora : ''} />
           {errors.hora && <span className='error'><span className='error-icon'></span>{errors.hora.message}</span>}
         </div>
         <div>
