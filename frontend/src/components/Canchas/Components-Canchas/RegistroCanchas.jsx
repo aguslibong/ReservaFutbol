@@ -31,6 +31,7 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
       setValue('idTipoCancha', cancha.idTipoCancha);
       setValue('descripcion', cancha.descripcion);
       setValue('foto', cancha.foto);
+      setValue('activo', cancha.activo)
     }
   }, [cancha, setValue]);
 
@@ -61,7 +62,15 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
         <h5>{cancha ? 'Actualizar Cancha' : 'Registro de Cancha'}</h5>
         <div className="form-group">
           <label htmlFor="fechaMantenimiento">Fecha Mantenimiento:</label>
-          <input type="date" className="form-control" id="fechaMantenimiento" {...register("fechaMantenimiento", { required: 'Este campo es requerido' })} />
+          <input type="date" className="form-control" id="fechaMantenimiento" {...register("fechaMantenimiento", { 
+            required: 'Este campo es requerido',
+            validate: value => {
+              const selectedDate = new Date(value);
+              const currentDate = new Date();
+              currentDate.setHours(0, 0, 0, 0); // Establecer la hora a 00:00:00 para comparar solo la fecha
+              return selectedDate <= currentDate || 'La fecha no puede ser mayor que el día de hoy';
+            }
+          })} />
           {errors.fechaMantenimiento && <span className='error'>{errors.fechaMantenimiento.message}</span>}
         </div>
         <div className="form-group">
@@ -84,6 +93,19 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
           <input type="text" className="form-control" id="foto" {...register("foto")} />
           {errors.foto && <span className='error'>{errors.foto.message}</span>}
         </div>
+        
+        {cancha && (
+          <div className="form-group">
+            <label htmlFor="activo">Condición:</label>
+            <select className="form-control" id="activo" {...register("activo", { required: 'Este campo es requerido' })}>
+              <option value="">Seleccione una opción</option>
+              <option value="true">Activo</option>
+              <option value="false">Inactivo</option>
+            </select>
+            {errors.activo && <span className='error'>{errors.activo.message}</span>}
+          </div>
+        )}
+        
         <div>
           <button type="submit" className="btn btn-primary mt-3 me-2">{cancha ? 'Actualizar' : 'Registrar'}</button>
           <button type="button" className="btn btn-danger mt-3" onClick={() => setAction('C')}>Cancelar</button>
@@ -94,10 +116,10 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
         <Modal.Header closeButton>
           <Modal.Title>Confirmación</Modal.Title>
         </Modal.Header>
-        <Modal.Body>¿Está seguro de que desea enviar el formulario?</Modal.Body>
+        <Modal.Body>¿Está seguro de que desea Registrar la Cancha?</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
-          <Button variant="primary" onClick={onSubmit}>Sí, enviar</Button>
+          <Button variant="primary" onClick={onSubmit}>Sí</Button>
         </Modal.Footer>
       </Modal>
     </div>
@@ -105,3 +127,4 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
 };
 
 export default RegistroCanchas;
+

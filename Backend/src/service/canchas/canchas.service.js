@@ -67,6 +67,7 @@ export const editarCancha = async (canchaEdit) => {
                 idTipoCancha: canchaEdit.idTipoCancha,
                 descripcion: canchaEdit.descripcion,
                 foto: canchaEdit.foto,
+                activo: canchaEdit.activo
             },
             {
                 where: { idCancha: canchaEdit.idCancha }

@@ -1,19 +1,25 @@
-import React from 'react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Button, Table } from 'react-bootstrap';
-
+import React, { useState } from 'react';
+import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
 
 const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, tipoCancha }) => {
     const [inputValue, setInputValue] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const [canchaToDelete, setCanchaToDelete] = useState(null);
 
     const handleInputChange = (event) => {
         const value = event.target.value;
-        setInputValue(value)
+        setInputValue(value);
     };
 
     const onClickDelete = async (cancha) => {
-        onDelete(cancha.idCancha);
+        setCanchaToDelete(cancha);
+        setShowModal(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        onDelete(canchaToDelete.idCancha);
+        setShowModal(false);
+        setCanchaToDelete(null);
     };
 
     const onClickUpdate = async (cancha) => {
@@ -25,29 +31,23 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
     };
 
     const getNombreTipoCancha = (idTipoCancha) => {
-        console.log(tipoCancha)
-        console.log(idTipoCancha)
-        const NombreTipocancha = tipoCancha.find(tipoCancha => tipoCancha.idTipoCancha === idTipoCancha);
-        return NombreTipocancha ? NombreTipocancha.descripcion : '';
+        const nombreTipoCancha = tipoCancha.find(tc => tc.idTipoCancha === idTipoCancha);
+        return nombreTipoCancha ? nombreTipoCancha.descripcion : '';
     };
 
     const tbody = rows[0] !== null ? (
         rows.map(e => (
             <tr key={e.idCancha}>
-                <td>{e.fechaMantenimiento}</td>
-                <td>
-                   {getNombreTipoCancha(e.idTipoCancha)} 
-                </td>
                 <td>{e.descripcion}</td>
+                <td>{getNombreTipoCancha(e.idTipoCancha)}</td>
                 <td>
                     <img className="fotoCancha" src={e.foto} alt={e.descripcion} />
                 </td>
+                <td>{e.fechaMantenimiento}</td>
+                <td>{e.activo ? 'Activo' : 'Inactivo'}</td>
                 <td>
-                    {e.activo ? 'Activo' : 'Inactivo'}
-                </td>
-                <td>
-                    <Button className="btn btn-sm btn-outline-primary" title="Modificar" variant="secondary" onClick={() => onClickUpdate(e)}>Modificar</Button>
-                    <Button variant="danger" className="me-3" onClick={() => onClickDelete(e)}>Eliminar</Button>
+                    <Button className="btn btn-sm" title="Modificar" variant="secondary" onClick={() => onClickUpdate(e)}>Modificar</Button>
+                    <Button variant="danger" className="btn-sm me-3" onClick={() => onClickDelete(e)}>Eliminar</Button>
                 </td>
             </tr>
         ))
@@ -89,10 +89,10 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                     <Table bordered>
                         <thead className="bg-light">
                             <tr>
-                                <th scope="col">Fecha Mantenimiento</th>
-                                <th scope="col">Tipo Cancha</th>
                                 <th scope="col">Descripción</th>
+                                <th scope="col">Tipo Cancha</th>
                                 <th scope="col">Foto</th>
+                                <th scope="col">Fecha Mantenimiento</th>
                                 <th scope="col">Condicion</th>
                                 <th scope="col">Opciones</th>
                             </tr>
@@ -103,6 +103,18 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                     </Table>
                 </Col>
             </Row>
+
+            <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Confirmación</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>¿Está seguro de que desea eliminar esta cancha?</Modal.Body>
+                <Modal.Body>Se eliminara de Forma Permanente</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
+                    <Button variant="danger" onClick={handleConfirmDelete}>Eliminar</Button>
+                </Modal.Footer>
+            </Modal>
         </Container>
     );
 };
