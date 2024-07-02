@@ -6,18 +6,17 @@ import { registrarTipoCancha, getTipoCancha, editarTipoCancha, eliminarTipoCanch
 
 const router = express.Router();
 
-// router para Canchas ================================================================================================================
 
+// router para TIPOCanchas ================================================================================================================
 // GET
-
-router.get('/cancha/:id', getCancha);
-router.get('/cancha', getCancha);
+router.get('/tipocancha/:id', getTipoCancha);
+router.get('/tipocancha', getTipoCancha);
 
 //POST
-router.post('/cancha', async (req, res) => {
+router.post('/tipocancha', async (req, res) => {
     try {
-        const cancha = await registrarCancha(req.body);
-        return res.json(cancha);
+        const tipocancha = await registrarTipoCancha(req.body);
+        return res.json(tipocancha);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Error al registrar la cancha' });
@@ -26,10 +25,10 @@ router.post('/cancha', async (req, res) => {
 
 // PUT
 //Nota: No se olviden de importar el archivo de manejo de errores
-router.put('/cancha', async (req, res) => {
+router.put('/tipocancha', async (req, res) => {
     try {
-        const cancha = await editarCancha(req.body);
-        return res.json(cancha);
+        const tipocancha = await editarTipoCancha(req.body);
+        return res.json(tipocancha);
     } catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
@@ -43,11 +42,11 @@ router.put('/cancha', async (req, res) => {
 });
 
 //DELETE
-router.delete('/cancha/:id', async (req, res) => {
+router.delete('/tipocancha/:id', async (req, res) => {
     try {
-        const idCancha = req.params.id
-        console.log(idCancha)
-        const resultado = await eliminarCancha(idCancha);
+        const idTipoCancha = req.params.id
+        console.log(idTipoCancha)
+        const resultado = await eliminarTipoCancha(idTipoCancha);
         return res.json(resultado);
     } catch (err) {
         if (err instanceof ResourceNotFound) {
@@ -57,5 +56,6 @@ router.delete('/cancha/:id', async (req, res) => {
         return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
     }
 })
+
 
 export default router;

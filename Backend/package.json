@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
- "scripts": {
+  "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --verbose --silent --detectOpenHandles --force-exit",
     "test:jsmodule": "node --experimental-vm-modules jest --verbose --silent --detectOpenHandles"
   },
@@ -12,9 +12,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "sequelize": "^6.37.3",
+    "sequelize-cli": "^6.6.2",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {

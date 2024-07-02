@@ -1,45 +1,48 @@
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcryptjs';
 import sequelize from '../../db/db.js';
-import TipoCancha from './tipoCancha-model.js';
 
-const Cancha = sequelize.define('Cancha', {
-    idCancha: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
+const User = sequelize.define('User', {
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+    validate: {
+      isEmail: true,
     },
-    fechaMantenimiento: {
-        type: DataTypes.DATEONLY,
-        allowNull: false,
-        defaultValue: DataTypes.NOW, // Establecer la fecha actual por defecto
-    },
-    idTipoCancha: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-            model: TipoCancha,
-            key: 'idTipoCancha',
-        },
-    },
-    descripcion: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    foto: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    activo: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true
-    }
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  userType: {
+    type: DataTypes.ENUM('admin', 'user'),
+    allowNull: false,
+  },
 }, {
-    //tableName: 'Cancha',
-    timestamps: false,
+  hooks: {
+    beforeCreate: async (user) => {
+      if (user.password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    },
+    beforeUpdate: async (user) => {
+      if (user.password) {
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(user.password, salt);
+      }
+    },
+  },
+  instanceMethods: {
+    validPassword: function (password) {
+      return bcrypt.compareSync(password, this.password);
+    }
+  }
 });
 
-TipoCancha.hasMany(Cancha, { foreignKey: 'idTipoCancha' });
-Cancha.belongsTo(TipoCancha, { foreignKey: 'idTipoCancha' }); 
-
-export default Cancha;
+export default User;
