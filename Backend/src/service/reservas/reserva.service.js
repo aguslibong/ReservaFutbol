@@ -1,31 +1,18 @@
 import express from "express";
 import sequelize from "../../../db/db.js";
 import Reserva from "../../../src/model/reserva-model.js";
-import { ResourceNotFound, ValidationError } from '../../error/errors.js'; //menejo de errores
-import { Op } from "sequelize";
+import { ResourceNotFound, ValidationError } from '../../error/errors.js'; // Manejo de errores
 
 export const ReservasGet = async (req, res) => {
     try {
-        const { comprobante } = req.query;
+        const { fechaReserva } = req.query;
         let reservas;
-        if (comprobante) {
-            reservas = await Reserva.findAll({
-                where: {
-                    comprobante: {
-                        [Op.like]: `%${comprobante}%`
-                    }
-                }
-            });
-
-            if (reservas.length === 0) {
-                throw new ResourceNotFound("No se encontraron reservas con el comprobante proporcionado");
-            }
-            res.status(200).json(reservas);
+        if (fechaReserva) {
+            reservas = await Reserva.findAll({ where: { fechaReserva: new Date(fechaReserva) } }); // Ajusta según tu base de datos
         } else {
-            const respuesta = await Reserva.findAll();
-            res.status(200).json(respuesta);
+            reservas = await Reserva.findAll();
         }
-
+        res.json(reservas);
     } catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
