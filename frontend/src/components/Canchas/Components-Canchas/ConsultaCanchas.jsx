@@ -43,6 +43,9 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                     <img className="fotoCancha" src={e.foto} alt={e.descripcion} />
                 </td>
                 <td>
+                    {e.activo ? 'Activo' : 'Inactivo'}
+                </td>
+                <td>
                     <Button className="btn btn-sm btn-outline-primary" title="Modificar" variant="secondary" onClick={() => onClickUpdate(e)}>Modificar</Button>
                     <Button variant="danger" className="me-3" onClick={() => onClickDelete(e)}>Eliminar</Button>
                 </td>
@@ -90,6 +93,7 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                                 <th scope="col">Tipo Cancha</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Foto</th>
+                                <th scope="col">Condicion</th>
                                 <th scope="col">Opciones</th>
                             </tr>
                         </thead>

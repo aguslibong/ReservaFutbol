@@ -25,6 +25,7 @@ export default function Canchas() {
         else {
             const data = await service.getCanchas(null);
             setRows(data);
+            console.log(data)
         }
         
     };
