@@ -5,17 +5,11 @@ import routerCanchas from './src/router/router-Canchas.js';
 import routerClientes from './src/router/router-Clientes.js'; 
 import routerTipoReserva from './src/router/router-TipoReserva.js';
 import routerTipoCancha from './src/router/router-TipoCancha.js'
-import routerUsuario from'./src/router/router-Usuario.js'
 import cors from 'cors';
-import { verifyToken, isAdmin, isAdminOrMember } from './src/middleware/autorizacion.js'; // Importar middlewares
 
 const app = express();
 app.use(cors({ origin: 'http://localhost:5173' }));
 const port = process.env.PORT || 3000;
-
-// Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // Inicializar la base de datos
 dbInit();
@@ -24,9 +18,8 @@ dbInit();
 app.use('/api', routerReservas); 
 app.use('/api', routerTipoReserva); 
 app.use('/api', routerCanchas);
-app.use('/api', routerTipoReserva);
+app.use('/api', routerTipoCancha);
 app.use('/api', routerClientes);
-app.use('/api', routerUsuario)
 
 app.get("/", (_, res) => {
     res.send("Servidor iniciado y escuchando ...");

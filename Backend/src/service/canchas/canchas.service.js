@@ -7,7 +7,6 @@ import { where } from "sequelize";
 // METODO GET
 export const getCancha = async (req, res) => {
     try {
-        console.log(req.params.id)
         if (req.params.id) {
             const desc = req.params.id;
             const cancha= await Cancha.findOne({
@@ -18,6 +17,7 @@ export const getCancha = async (req, res) => {
             res.json(cancha);
         } else {
             const cancha = await Cancha.findAll();
+            console.log("Cancha",cancha)
             res.json(cancha)
         }
 
