@@ -1,14 +1,13 @@
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Alert from 'react-bootstrap/Alert';
+import './Reservas.css';
 import { ReservaListado } from "./ComponentesHijos/ReservaListado.jsx";
 import ReservaRegistro from "./ComponentesHijos/ReservaRegistro.jsx";
 import reservasService from "../../services/reservas/reservas.service.js";
 import canchasService from "../../services/Canchas/canchas.service.js";
 import clientesService from "../../services/clientes/clientes.services.js";
 import tipoReservasService from "../../services/reservas/tipoReservas.service.js";
-import { useState, useEffect } from "react";
-import { Link } from 'react-router-dom';
-import { useForm } from "react-hook-form";
-import Alert from 'react-bootstrap/Alert';
-import './Reservas.css';
 
 export default function Reservas() {
   const [action, setAction] = useState('C');
@@ -20,24 +19,23 @@ export default function Reservas() {
   const [clientes, setClientes] = useState([]);
   const [tipoReservas, setTipoReservas] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
+  const [showInactive, setShowInactive] = useState(false); // Nuevo estado para mostrar reservas inactivas
 
   const { handleSubmit, register } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!data.comprobante) {
+    if (!data.fecha) {
       setShowAlert(false);
       setCurrentPage(1);
       return loadData();
     }
-    console.log(data.comprobante)
-    const reservaFiltrada = await reservasService.getReservas(data.comprobante);
-
+    const reservaFiltrada = await reservasService.getReservasPorFecha(data.fecha);
     if (!Array.isArray(reservaFiltrada) || reservaFiltrada.length === 0) {
       setShowAlert(true);
       return loadData();
     } else {
       setCurrentPage(1);
-      setRows(reservaFiltrada); // Directamente usa reservaFiltrada en lugar de envolverlo en un array.
+      setRows(reservaFiltrada);
       setShowAlert(false);
     }
   });
@@ -49,7 +47,8 @@ export default function Reservas() {
 
   const loadData = async () => {
     const data = await reservasService.getReservas();
-    setRows(Array.isArray(data) ? data : []);
+    const filteredData = showInactive ? data : data.filter(reserva => reserva.activo);
+    setRows(Array.isArray(filteredData) ? filteredData : []);
   };
 
   const fetchAuxiliaryData = async () => {
@@ -75,19 +74,13 @@ export default function Reservas() {
 
   const onEliminarReserva = async (reserva) => {
     await reservasService.deleteReservas(reserva.idReserva);
-    const updatedData = await reservasService.getReservas();
-    
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = updatedData.slice(indexOfFirstItem, indexOfLastItem);
-    
-    if (currentItems.length === 0 && currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  
-    setRows(updatedData);
+    loadData();
   };
-  
+
+  const toggleShowInactive = () => {
+    setShowInactive(!showInactive);
+    loadData();
+  };
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -96,17 +89,17 @@ export default function Reservas() {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
-    loadData();
   };
-  
 
   const searchForm = (
     <form onSubmit={onSubmit} className="d-flex">
+      <label htmlFor="fecha" style={{ marginRight: 10 }}>Filtrar por fecha:</label>
       <input
-        type="text"
-        {...register("comprobante")}
+        type="date"
+        {...register("fecha")}
+        id="fecha"
         className="form-control"
-        placeholder="Buscar por Observacion"
+        placeholder="Buscar por Fecha"
         aria-label="Example text with button addon"
         aria-describedby="button-addon1"
       />
@@ -130,6 +123,9 @@ export default function Reservas() {
       )}
       {action === 'C' && (
         <>
+          <button className="btn btn-secondary" onClick={toggleShowInactive}>
+            {showInactive ? 'Ocultar Inactivas' : 'Mostrar Inactivas'}
+          </button>
           <ReservaListado
             rows={currentItems}
             onModificarReserva={onModificarReserva}
@@ -141,18 +137,10 @@ export default function Reservas() {
             currentPage={currentPage}
             handlePageChange={handlePageChange}
             searchForm={searchForm}
+            onAgregarReserva={onAgregarReserva}
             showAlert={showAlert}
             setShowAlert={setShowAlert}
           />
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-            <button type="button" style={{ width: 150, background: "green" }} className="btn btn-secondary" onClick={onAgregarReserva}>
-              Agregar Reserva
-            </button>
-          </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-            <Link to="/inicio" className="btn btn-primary m-3">Menu</Link>
-            <Link to="/tipoReserva" className="btn btn-primary m-3">Gestionar Tipo de Reserva</Link>
-          </div>
         </>
       )}
     </>
