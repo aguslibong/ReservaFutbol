@@ -7,7 +7,7 @@ import TipoCancha from './components/Canchas/TipoCancha.jsx';
 import Reservas from './components/Reservas/Reservas.jsx';
 import TipoReservas from './components/Reservas/tipoReservas.jsx';
 import Inicio from './components/Inicio.jsx';
-//import './App.css';
+import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
