@@ -36,9 +36,6 @@ export default function Canchas() {
         } else {
             setRows(inactivos);
         }
-
-        console.log('Activos:', activos);
-        console.log('Inactivos:', inactivos);
     };
 
     const getTipoCancha = async () => {
