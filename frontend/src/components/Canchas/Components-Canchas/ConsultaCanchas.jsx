@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Button, Table, Modal } from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
-const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, tipoCancha }) => {
+const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, tipoCancha, onMostrar, mostrandoActivos }) => {
     const [inputValue, setInputValue] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [canchaToDelete, setCanchaToDelete] = useState(null);
@@ -22,8 +23,8 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
         setCanchaToDelete(null);
     };
 
-    const onClickUpdate = async (cancha) => {
-        onModificar(cancha);
+    const onClickUpdate = async (cancha, accion) => {
+        onModificar(cancha, accion);
     };
 
     const onClickBuscar = async () => {
@@ -35,7 +36,7 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
         return nombreTipoCancha ? nombreTipoCancha.descripcion : '';
     };
 
-    const tbody = rows[0] !== null ? (
+    const tbody = rows.length > 0 ? (
         rows.map(e => (
             <tr key={e.idCancha}>
                 <td>{e.descripcion}</td>
@@ -46,14 +47,17 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                 <td>{e.fechaMantenimiento}</td>
                 <td>{e.activo ? 'Activo' : 'Inactivo'}</td>
                 <td>
-                    <Button className="btn btn-sm" title="Modificar" variant="secondary" onClick={() => onClickUpdate(e)}>Modificar</Button>
-                    <Button variant="danger" className="btn-sm me-3" onClick={() => onClickDelete(e)}>Eliminar</Button>
+                    <Button className="btn btn-sm" title="Modificar" variant="secondary" onClick={() => onClickUpdate(e, 'M')}> <i className="bi bi-archive"></i></Button>
+                    <Button variant="" className="btn-sm btn-warning m-3" onClick={() => onClickUpdate(e, 'bool')}>
+                        {e.activo ? <i className="bi bi-ban"></i> : <i className="bi bi-check-lg"></i>}
+                    </Button>
+                    <Button variant="danger" className="btn-sm " onClick={() => onClickDelete(e)}><i className="bi bi-trash3"></i></Button>
                 </td>
             </tr>
         ))
     ) : (
         <tr>
-            <td colSpan="6" style={{ textAlign: 'center' }}>ID no encontrada</td>
+            <td colSpan="6" style={{ textAlign: 'center' }}>No se encontraron canchas</td>
         </tr>
     );
 
@@ -79,9 +83,12 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                     <Button variant="primary" className="m-3" onClick={onClickBuscar}>Buscar</Button>
                 </Col>
             </Row>
-            <Row >
+            <Row>
                 <Col>
-                    <Button variant="secondary" className="mt-3" onClick={onRegistrar}>Registrar Cancha</Button>
+                    <Button variant="info" className="btn-sm mt-3" onClick={onMostrar}>{mostrandoActivos ? 'Mostrar Inactivos' : 'Mostrar Activos'}</Button>
+                </Col>
+                <Col>
+                    <Button variant="secondary" className="btn-sm mt-3" onClick={onRegistrar}>Registrar Cancha</Button>
                 </Col>
             </Row>
             <Row>
@@ -109,7 +116,7 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, t
                     <Modal.Title>Confirmación</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>¿Está seguro de que desea eliminar esta cancha?</Modal.Body>
-                <Modal.Body>Se eliminara de Forma Permanente</Modal.Body>
+                <Modal.Body>Se eliminara de Forma Permanente al igual que todas las Reservas relacionadas</Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
                     <Button variant="danger" onClick={handleConfirmDelete}>Eliminar</Button>

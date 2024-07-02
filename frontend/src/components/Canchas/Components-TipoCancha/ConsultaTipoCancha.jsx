@@ -36,7 +36,6 @@ const ConsultaTipoCancha = ({ rows, onRegistrar, onModificar, onDelete, buscarId
     const tbody = (rows[0] !== null) ? (
         rows.map(e => (
             <tr key={e.idTipoCancha}>
-                <td>{e.idTipoCancha}</td>
                 <td>{e.descripcion}</td>
                 <td>
                     <button type="button" className="btn btn-secondary me-3" onClick={() => onClickUpdate(e)}>Modificar</button>
@@ -71,7 +70,6 @@ const ConsultaTipoCancha = ({ rows, onRegistrar, onModificar, onDelete, buscarId
             <table className="table table-bordered">
                 <thead className="bg-light">
                     <tr>
-                        <th scope="col">ID</th>
                         <th scope="col">Descripción</th>
                         <th scope="col">Opciones</th>
                     </tr>
