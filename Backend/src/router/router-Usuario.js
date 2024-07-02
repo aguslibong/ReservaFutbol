@@ -13,9 +13,10 @@ const users = [
   {
     usuario: "juan",
     clave: "123",
-    rol: "user",
+    rol: "member",
   },
 ];
+
 let refreshTokens = [];
 
 router.post("/login", (req, res) => {
