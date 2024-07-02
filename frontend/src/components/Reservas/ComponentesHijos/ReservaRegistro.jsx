@@ -1,8 +1,23 @@
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Alert from 'react-bootstrap/Alert';
 import reservasService from "../../../services/reservas/reservas.service.js";
 
 export default function ReservaRegistro({ setAction, loadData, reserva, canchas, clientes, tipoReservas }) {
+  const [canchaAct ,setCanchaAct] = useState ([])
+
+  useEffect(() => {
+    const activos = [];
+    const inactivos = [];
+    canchas.forEach(element => {
+      element.activo ? activos.push(element) : inactivos.push(element);
+    });
+    console.log(activos)
+    setCanchaAct(activos)
+    }, []);
+
+
+  
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       ...reserva,
@@ -41,9 +56,9 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
       <div className="form-group">
         <label htmlFor="idCancha">Cancha</label>
         <select {...register("idCancha", { required: "La cancha es obligatoria" })} className="form-control">
-          {canchas.map((cancha) => (
-            <option key={cancha.idCancha} value={cancha.idCancha}>
-              {cancha.descripcion}
+          {canchas.map((canchaAct) => (
+            <option key={canchaAct.idCancha} value={canchaAct.idCancha}>
+              {canchaAct.descripcion}
             </option>
           ))}
         </select>

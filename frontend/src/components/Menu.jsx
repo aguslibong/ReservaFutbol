@@ -23,9 +23,6 @@ function Menu() {
             <Nav.Link as={NavLink} to="/cancha/tipocancha" className="nav-link">Tipo Canchas</Nav.Link>
 
           </Nav>
-          <Nav>
-            <Nav.Link as={NavLink} to="/login" className="nav-link">Iniciar sesión</Nav.Link>
-          </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>

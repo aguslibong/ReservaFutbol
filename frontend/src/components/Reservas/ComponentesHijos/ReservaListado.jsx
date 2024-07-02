@@ -80,9 +80,9 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, on
             <td>{reserva.comprobante}</td>
             <td>{reserva.activo ? 'Sí' : 'No'}</td>
             <td>
-                <button onClick={() => onClickModificar(reserva)} className="btn btn-primary">Modificar</button>
-                <button onClick={() => onClickEliminar(reserva)} className="btn btn-danger">Eliminar</button>
-                <button onClick={() => onClickToggleActivo(reserva)} className="btn btn-secondary">{reserva.activo ? 'Desactivar' : 'Activar'}</button>
+                <button onClick={() => onClickModificar(reserva)} className="btn btn-primary"><i className="bi bi-archive"></i></button>
+                <button onClick={() => onClickEliminar(reserva)} className="btn btn-danger"><i className="bi bi-trash3"></i></button>
+                <button onClick={() => onClickToggleActivo(reserva)} className="btn btn-warning"> {reserva.activo ? <i className="bi bi-ban"></i> : <i className="bi bi-check-lg"></i>}</button>
             </td>
         </tr>
     ));
