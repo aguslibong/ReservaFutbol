@@ -22,7 +22,7 @@ function App() {
             <Route path="/cancha" element={<Canchas />} />
             <Route path="/cancha/tipocancha" element={<TipoCancha />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/tipoReserva" element={<TipoReservas />} />
+            <Route path="/reserva/tipoReserva" element={<TipoReservas />} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Routes>
         </div>

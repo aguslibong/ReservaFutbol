@@ -19,6 +19,9 @@ function Menu() {
           <Nav className="me-auto">
             <Nav.Link as={NavLink} to="/reserva" className="nav-link">Reservas</Nav.Link>
             <Nav.Link as={NavLink} to="/cancha" className="nav-link">Canchas</Nav.Link>
+            <Nav.Link as={NavLink} to="/reserva/tiporeserva" className="nav-link">Tipo Reserva</Nav.Link>
+            <Nav.Link as={NavLink} to="/cancha/tipocancha" className="nav-link">Tipo Canchas</Nav.Link>
+
           </Nav>
           <Nav>
             <Nav.Link as={NavLink} to="/login" className="nav-link">Iniciar sesión</Nav.Link>
