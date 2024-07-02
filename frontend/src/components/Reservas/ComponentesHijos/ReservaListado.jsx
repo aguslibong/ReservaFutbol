@@ -2,8 +2,10 @@ import React from "react";
 import Table from 'react-bootstrap/Table';
 import Pagination from 'react-bootstrap/Pagination';
 import Alert from 'react-bootstrap/Alert';
+import reservasService from "../../../services/reservas/reservas.service.js"; // Asegúrate de que la ruta sea correcta
 
-export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, canchas, clientes, tipoReservas, totalPages, currentPage, handlePageChange, searchForm, onAgregarReserva, showAlert, setShowAlert }) {
+export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, onToggleActivoReserva, canchas, clientes, tipoReservas, totalPages, currentPage, handlePageChange, searchForm, onAgregarReserva, showAlert, setShowAlert }) {
+   
     const getNombreCancha = (idCancha) => {
         const cancha = canchas.find(cancha => cancha.idCancha === idCancha);
         return cancha ? cancha.descripcion : '';
@@ -27,10 +29,8 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
         onEliminarReserva(reserva);
     };
 
-    const onClickToggleActivo = async (reserva) => {
-        reserva.activo = !reserva.activo;
-        await reservasService.updateReservas(reserva);
-        loadData();
+    const onClickToggleActivo = (reserva) => {
+        onToggleActivoReserva(reserva);
     };
 
     if (!rows || rows.length === 0) {
@@ -39,13 +39,13 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
                 <div className="header-container p-3 mb-2 bg-primary text-white rounded d-flex justify-content-between align-items-center">
                     <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>RESERVAS</h2>
                     {searchForm}
-                    <button type="button" style={{ width: 150, background: "green" }} className="btn btn-secondary" onClick={onAgregarReserva}>
+                    <button type="button" style={{ width: 150, background: "green", marginLeft: 50 }} className="btn btn-secondary" onClick={onAgregarReserva}>
                         Agregar Reserva
                     </button>
                 </div>
                 {showAlert && (
                     <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-                        No se encontró una reserva con la observación proporcionada.
+                        No se encontró una reserva con la Fecha proporcionada.
                     </Alert>
                 )}
                 <Table responsive>
@@ -101,9 +101,10 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
             <div className="header-container p-3 mb-2 bg-primary text-white rounded d-flex justify-content-between align-items-center">
                 <h2 className="mb-0" style={{ fontFamily: 'monospace' }}>RESERVAS</h2>
                 {searchForm}
-                <button type="button" style={{ width: 150, background: "green" }} className="btn btn-secondary" onClick={onAgregarReserva}>
+                <button type="button" style={{ width: 150, background: "green", marginLeft: 50 }} className="btn btn-secondary" onClick={onAgregarReserva}>
                     Agregar Reserva
                 </button>
+
             </div>
             {showAlert && (
                 <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
