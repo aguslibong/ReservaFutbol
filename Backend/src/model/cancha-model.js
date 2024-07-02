@@ -1,48 +1,45 @@
 import { DataTypes } from 'sequelize';
-import bcrypt from 'bcryptjs';
 import sequelize from '../../db/db.js';
+import TipoCancha from './tipoCancha-model.js';
 
-const User = sequelize.define('User', {
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true,
+const Cancha = sequelize.define('Cancha', {
+    idCancha: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
     },
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  userType: {
-    type: DataTypes.ENUM('admin', 'user'),
-    allowNull: false,
-  },
-}, {
-  hooks: {
-    beforeCreate: async (user) => {
-      if (user.password) {
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt);
-      }
+    fechaMantenimiento: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+        defaultValue: DataTypes.NOW, // Establecer la fecha actual por defecto
     },
-    beforeUpdate: async (user) => {
-      if (user.password) {
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(user.password, salt);
-      }
+    idTipoCancha: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: TipoCancha,
+            key: 'idTipoCancha',
+        },
     },
-  },
-  instanceMethods: {
-    validPassword: function (password) {
-      return bcrypt.compareSync(password, this.password);
+    descripcion: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    foto: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    activo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     }
-  }
+}, {
+    //tableName: 'Cancha',
+    timestamps: false,
 });
 
-export default User;
+TipoCancha.hasMany(Cancha, { foreignKey: 'idTipoCancha' }); //1..*
+Cancha.belongsTo(TipoCancha, { foreignKey: 'idTipoCancha' }); 
+
+export default Cancha;
