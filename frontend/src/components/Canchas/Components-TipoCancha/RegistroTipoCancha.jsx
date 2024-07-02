@@ -48,6 +48,7 @@ const RegistroTipoCancha = ({ setAction, loadData, cancha }) => {
           <button type="button" className="btn btn-danger mt-3" onClick={() => setAction('C')}>Cancelar</button>
         </div>
       </form>
+      
     </div>
   );
 };
