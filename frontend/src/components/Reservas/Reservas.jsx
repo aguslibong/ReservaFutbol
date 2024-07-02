@@ -29,178 +29,184 @@ export default function Reservas() {
   const { handleSubmit, register } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log(data.descripcion)
     if (!data.descripcion) {
       setShowAlert(false);
       setCurrentPage(1);
       return loadData();
     }
     const tipoReservaFiltrada = await tipoReservasService.getTipoReservas(data.descripcion);
-    if (!Array.isArray(reservaFiltrada) || reservaFiltrada.length === 0) {
-      setShowAlert(true);
-      return loadData();
-    } else {
-      setCurrentPage(1);
-      setRows(reservaFiltrada);
-      setShowAlert(false);
+    const reservaFiltrada = [];
+    const reservas = await reservasService.getReservas();
+    for (let i = 0; i < tipoReservaFiltrada.length; i++) {
+      const reserva = reservas.find(reserva => reserva.idTipoReserva === tipoReservaFiltrada[i].idTipoReserva);
+      reservaFiltrada.push(reserva);
     }
-  });
+    console.log("Reserva:",reservaFiltrada,"TipoReserva:",tipoReservaFiltrada)
+        if (!Array.isArray(reservaFiltrada) || reservaFiltrada.length === 0) {
+          setShowAlert(true);
+          return loadData();
+        } else {
+          setCurrentPage(1);
+          setRows(reservaFiltrada);
+          setShowAlert(false);
+        }
+      });
 
-  useEffect(() => {
-    loadData();
-    fetchAuxiliaryData();
-  }, []);
+      useEffect(() => {
+        loadData();
+        fetchAuxiliaryData();
+      }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [showInactive]);
+      useEffect(() => {
+        loadData();
+      }, [showInactive]);
 
-  const loadData = async () => {
-    const data = await reservasService.getReservas();
-    const filteredData = showInactive ? data : data.filter(reserva => reserva.activo);
-    setRows(Array.isArray(filteredData) ? filteredData : []);
-  };
+      const loadData = async () => {
+        const data = await reservasService.getReservas();
+        const filteredData = showInactive ? data : data.filter(reserva => reserva.activo);
+        setRows(Array.isArray(filteredData) ? filteredData : []);
+      };
 
-  const fetchAuxiliaryData = async () => {
-    const [canchasData, clientesData, tipoReservasData] = await Promise.all([
-      canchasService.getCanchas(),
-      clientesService.getClientes(),
-      tipoReservasService.getTipoReservas()
-    ]);
-    setCanchas(canchasData);
-    setClientes(clientesData);
-    setTipoReservas(tipoReservasData);
-  };
+      const fetchAuxiliaryData = async () => {
+        const [canchasData, clientesData, tipoReservasData] = await Promise.all([
+          canchasService.getCanchas(),
+          clientesService.getClientes(),
+          tipoReservasService.getTipoReservas()
+        ]);
+        setCanchas(canchasData);
+        setClientes(clientesData);
+        setTipoReservas(tipoReservasData);
+      };
 
-  const onAgregarReserva = () => {
-    setSelectedReserva(null);
-    setAction('R');
-  };
+      const onAgregarReserva = () => {
+        setSelectedReserva(null);
+        setAction('R');
+      };
 
-  const onModificarReserva = (reserva) => {
-    setSelectedReserva(reserva);
-    setAction('M');
-  };
+      const onModificarReserva = (reserva) => {
+        setSelectedReserva(reserva);
+        setAction('M');
+      };
 
-  const onEliminarReserva = async () => {
-    if (modalReserva) {
-      await reservasService.deleteReservas(modalReserva.idReserva);
-      setModalReserva(null);
-      setShowModal(false);
-      loadData();
-    }
-  };
+      const onEliminarReserva = async () => {
+        if (modalReserva) {
+          await reservasService.deleteReservas(modalReserva.idReserva);
+          setModalReserva(null);
+          setShowModal(false);
+          loadData();
+        }
+      };
 
-  const onToggleActivo = async () => {
-    if (modalReserva) {
-      modalReserva.activo = !modalReserva.activo;
-      await reservasService.updateReservas(modalReserva);
-      setModalReserva(null);
-      setShowModal(false);
-      loadData();
-    }
-  };
+      const onToggleActivo = async () => {
+        if (modalReserva) {
+          modalReserva.activo = !modalReserva.activo;
+          await reservasService.updateReservas(modalReserva);
+          setModalReserva(null);
+          setShowModal(false);
+          loadData();
+        }
+      };
 
-  const toggleShowInactive = () => {
-    setShowInactive(prev => !prev);
-  };
+      const toggleShowInactive = () => {
+        setShowInactive(prev => !prev);
+      };
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = rows.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(rows.length / itemsPerPage);
+      const indexOfLastItem = currentPage * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const currentItems = rows.slice(indexOfFirstItem, indexOfLastItem);
+      const totalPages = Math.ceil(rows.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+      const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+      };
 
-  const handleShowModal = (action, reserva) => {
-    setModalAction(action);
-    setModalReserva(reserva);
-    setShowModal(true);
-  };
+      const handleShowModal = (action, reserva) => {
+        setModalAction(action);
+        setModalReserva(reserva);
+        setShowModal(true);
+      };
 
-  const handleCloseModal = () => {
-    setModalAction(null);
-    setModalReserva(null);
-    setShowModal(false);
-  };
+      const handleCloseModal = () => {
+        setModalAction(null);
+        setModalReserva(null);
+        setShowModal(false);
+      };
 
-  const searchForm = (
-    <form onSubmit={onSubmit} className="d-flex">
-      <input
-        htmlFor="tipoReserva"
-        style={{ marginLeft: 50, marginRight: 20, width: 300}}
-        type="text"
-        {...register("descripcion")}
-        id="fecha"
-        className="form-control"
-        placeholder="Buscar por Tipo Reserva"
-        aria-label="Example text with button addon"
-        aria-describedby="button-addon1"
-      />
-      <button className="btn btn-filtrar" type="submit" id="button-addon1" style={{ background: 'lightgreen'}}>
-        Buscar
-      </button>
-    </form>
-  );
-
-  return (
-    <>
-      {(action === 'R' || action === 'M') && (
-        <ReservaRegistro
-          setAction={setAction}
-          loadData={loadData}
-          reserva={selectedReserva}
-          canchas={canchas}
-          clientes={clientes}
-          tipoReservas={tipoReservas}
-        />
-      )}
-      {action === 'C' && (
-        <>
-          <div style={{ alignItems: "center", display: "flex" }}>
-            <button className="btn btn-secondary" id="BottonInactivas" style={{ width: 200, alignItems: "center" }} onClick={toggleShowInactive}>
-              {showInactive ? 'Mostrar Inactivas' : 'Ocultar Inactivas'}
-            </button>
-          </div>
-          <ReservaListado
-            rows={currentItems}
-            onModificarReserva={onModificarReserva}
-            onEliminarReserva={(reserva) => handleShowModal('eliminar', reserva)}
-            onToggleActivoReserva={(reserva) => handleShowModal('toggleActivo', reserva)}
-            canchas={canchas}
-            clientes={clientes}
-            tipoReservas={tipoReservas}
-            totalPages={totalPages}
-            currentPage={currentPage}
-            handlePageChange={handlePageChange}
-            searchForm={searchForm}
-            onAgregarReserva={onAgregarReserva}
-            showAlert={showAlert}
-            setShowAlert={setShowAlert}
+      const searchForm = (
+        <form onSubmit={onSubmit} className="d-flex">
+          <input
+            htmlFor="tipoReserva"
+            style={{ marginLeft: 50, marginRight: 20, width: 300 }}
+            type="text"
+            {...register("descripcion")}
+            id="fecha"
+            className="form-control"
+            placeholder="Buscar por Tipo Reserva"
+            aria-label="Example text with button addon"
+            aria-describedby="button-addon1"
           />
+          <button className="btn btn-filtrar" type="submit" id="button-addon1" style={{ background: 'lightgreen' }}>
+            Buscar
+          </button>
+        </form>
+      );
+
+      return (
+        <>
+          {(action === 'R' || action === 'M') && (
+            <ReservaRegistro
+              setAction={setAction}
+              loadData={loadData}
+              reserva={selectedReserva}
+              canchas={canchas}
+              clientes={clientes}
+              tipoReservas={tipoReservas}
+            />
+          )}
+          {action === 'C' && (
+            <>
+              <div style={{ alignItems: "center", display: "flex" }}>
+                <button className="btn btn-secondary" id="BottonInactivas" style={{ width: 200, alignItems: "center" }} onClick={toggleShowInactive}>
+                  {showInactive ? 'Ocultar Inactivas' : 'Mostrar Inactivas'}
+                </button>
+              </div>
+              <ReservaListado
+                rows={currentItems}
+                onModificarReserva={onModificarReserva}
+                onEliminarReserva={(reserva) => handleShowModal('eliminar', reserva)}
+                onToggleActivoReserva={(reserva) => handleShowModal('toggleActivo', reserva)}
+                canchas={canchas}
+                clientes={clientes}
+                tipoReservas={tipoReservas}
+                totalPages={totalPages}
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+                searchForm={searchForm}
+                onAgregarReserva={onAgregarReserva}
+                showAlert={showAlert}
+                setShowAlert={setShowAlert}
+              />
+            </>
+
+          )}
+
+          <Modal show={showModal} onHide={handleCloseModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirmación</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {modalAction === 'eliminar' && "¿Estás seguro de que quieres eliminar esta reserva?"}
+              {modalAction === 'toggleActivo' && `¿Estás seguro de que quieres ${modalReserva?.activo ? 'desactivar' : 'activar'} esta reserva?`}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Cancelar
+              </Button>
+              <Button variant="primary" onClick={modalAction === 'eliminar' ? onEliminarReserva : onToggleActivo}>
+                Confirmar
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </>
-
-      )}
-
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirmación</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {modalAction === 'eliminar' && "¿Estás seguro de que quieres eliminar esta reserva?"}
-          {modalAction === 'toggleActivo' && `¿Estás seguro de que quieres ${modalReserva?.activo ? 'desactivar' : 'activar'} esta reserva?`}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={modalAction === 'eliminar' ? onEliminarReserva : onToggleActivo}>
-            Confirmar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
-}
+      );
+    }

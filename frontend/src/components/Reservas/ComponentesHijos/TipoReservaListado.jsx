@@ -28,7 +28,6 @@ export default function TipoReservaListado({ rows, onModificar, onEliminar, tota
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Descripción</th>
                             <th>Acciones</th>
                         </tr>
@@ -42,7 +41,6 @@ export default function TipoReservaListado({ rows, onModificar, onEliminar, tota
 
     const tbody = rows.map((tipoReserva) => (
         <tr key={tipoReserva.idTipoReserva}>
-            <td>{tipoReserva.idTipoReserva}</td>
             <td>{tipoReserva.descripcion}</td>
             <td>
                 <button onClick={() => onClickModificar(tipoReserva)} className="btn btn-warning me-2">Modificar</button>
@@ -71,14 +69,13 @@ export default function TipoReservaListado({ rows, onModificar, onEliminar, tota
             </div>
             {showAlert && (
               <Alert variant="danger" onClose={() => setShowAlert(false)} dismissible>
-                No se encontró un tipo de reserva con el ID proporcionado.
+                No se encontró un tipo de reserva con la descripcion proporcionada.
               </Alert>
             )}
             <div className="table-container">
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th>Id</th>
                             <th>Descripción</th>
                             <th>Acciones</th>
                         </tr>

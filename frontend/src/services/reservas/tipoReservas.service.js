@@ -5,7 +5,7 @@ const URL = 'http://localhost:3000/api/tipoReserva';
 const getTipoReservas = async (descripcion) => {
     try {
         if (descripcion) {
-            const res = await axios.get(`${URL}?fechaReserva=${descripcion}`);
+            const res = await axios.get(`${URL}?descripcion=${descripcion}`);
             return res.data;
         } else {
             const res = await axios.get(URL);

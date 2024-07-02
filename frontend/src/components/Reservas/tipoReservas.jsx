@@ -17,20 +17,18 @@ export default function TipoReservas() {
     const { handleSubmit, register } = useForm();
 
     const onSubmit = handleSubmit(async (data) => {
-        if (!data.idTipoReserva) {
+        if (!data.descripcion) {
             setShowAlert(false);
             setCurrentPage(1);
             return loadData();
         }
-        const tipoReservaFiltrada = (await tipoReservasService.getTipoReservas()).find((tipoReserva) => tipoReserva.idTipoReserva === parseInt(data.idTipoReserva));
-        const filteredData = tipoReservaFiltrada ? [tipoReservaFiltrada] : [];
-
-        if (filteredData.length === 0) {
+        const tipoReservaFiltrada = (await tipoReservasService.getTipoReservas(data.descripcion))
+        if (tipoReservaFiltrada.length === 0) {
             setShowAlert(true);
             return loadData();
         } else {
             setCurrentPage(1);
-            setRows(filteredData);
+            setRows(tipoReservaFiltrada);
             setShowAlert(false);
         }
     });
@@ -61,11 +59,11 @@ export default function TipoReservas() {
         const indexOfLastItem = currentPage * itemsPerPage;
         const indexOfFirstItem = indexOfLastItem - itemsPerPage;
         const currentItems = updatedData.slice(indexOfFirstItem, indexOfLastItem);
-        
+
         if (currentItems.length === 0 && currentPage > 1) {
-          setCurrentPage(currentPage - 1);
+            setCurrentPage(currentPage - 1);
         }
-      
+
         setRows(updatedData);
     };
 
@@ -74,18 +72,18 @@ export default function TipoReservas() {
     const currentItems = rows.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(rows.length / itemsPerPage);
 
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    loadData();
-  };
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+        loadData();
+    };
 
     const searchForm = (
         <form onSubmit={onSubmit} className="d-flex">
             <input
                 type="text"
-                {...register("idTipoReserva")}
+                {...register("descripcion")}
                 className="form-control"
-                placeholder="Buscar por id de tipo reserva"
+                placeholder="Buscar por descripcion"
                 aria-label="Example text with button addon"
                 aria-describedby="button-addon1"
             />
@@ -106,6 +104,11 @@ export default function TipoReservas() {
             )}
             {action === 'C' && (
                 <>
+                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
+                        <button type="button" style={{ width: 150, background: "green" }} className="btn btn-secondary" onClick={onAgregarTipoReserva}>
+                            Agregar Tipo Reserva
+                        </button>
+                    </div>
                     <TipoReservaListado
                         rows={currentItems}
                         onModificar={onModificarTipoReserva}
@@ -117,15 +120,6 @@ export default function TipoReservas() {
                         showAlert={showAlert}
                         setShowAlert={setShowAlert}
                     />
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-                        <button type="button" style={{ width: 150, background: "green" }} className="btn btn-secondary" onClick={onAgregarTipoReserva}>
-                            Agregar Tipo Reserva
-                        </button>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "20px" }}>
-                        <Link to="/inicio" className="btn btn-primary m-3">Menu</Link>
-                        <Link to="/reserva" className="btn btn-primary m-3">Volver</Link>
-                    </div>
                 </>
             )}
         </>
