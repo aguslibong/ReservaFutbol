@@ -2,27 +2,19 @@ import express from "express";
 import sequelize from "../../../db/db.js"
 import TipoReserva from "../../../src/model/tipoReserva-model.js"
 import { ResourceNotFound, ValidationError } from '../../error/errors.js'; //menejo de errores
-import { where } from "sequelize";
+import { where, Op } from "sequelize";
 
 export const TipoReservasGet = async (req, res) => {
     try {
-        if (req.params.id) {
-            const id = req.params.id;
-            const tipoReserva = await TipoReserva.findOne({
-                where: {
-                    idTipoReserva: id
-                },
-            });
-            if (!tipoReserva){
-                throw new ResourceNotFound("Reserva no encontrada")}
-            
-            res.json(tipoReserva);
+        const { descripcion } = req.query;
+        let tipoReservas;
+        if (descripcion) {
+            tipoReservas = await TipoReserva.findAll({ where: { descripcion: {[Op.like]: `%${descripcion}%`} } })
         } else {
-            const respuesta = await TipoReserva.findAll();
-            res.json(respuesta);
+            tipoReservas = await TipoReserva.findAll();
         }
-
-    }
+        res.json(tipoReservas);
+        }
     catch (err) {
         if (err instanceof ResourceNotFound) {
             return res.status(404).json({ error: err.message });
@@ -31,6 +23,23 @@ export const TipoReservasGet = async (req, res) => {
         return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' })
     }
 }
+
+export const TipoReservasGetById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const tipoReserva = await TipoReserva.findOne({ where: { idTipoReserva: id } });
+        if (!tipoReserva) {
+            throw new ResourceNotFound("Tipo Reserva no encontrada");
+        }
+        res.status(200).json(tipoReserva);
+    } catch (error) {
+        if (error instanceof ResourceNotFound) {
+            return res.status(404).json({ error: error.message });
+        }
+        console.error('Error al obtener la reserva:', error);
+        return res.status(500).json({ error: 'Error imprevisto. Intente nuevamente' });
+    }
+};
 
 export const TipoReservasPost = async (req, res) => {
     const nuevaTipoReserva = req.body;

@@ -26,6 +26,7 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
   };
 
   return (
+    <div className="container_app">
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="form-group">
         <label htmlFor="fechaReserva">Fecha Reserva</label>
@@ -84,5 +85,6 @@ export default function ReservaRegistro({ setAction, loadData, reserva, canchas,
         <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancelar</button>
       </div>
     </form>
+    </div>
   );
 }

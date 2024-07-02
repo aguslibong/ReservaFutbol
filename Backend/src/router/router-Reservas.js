@@ -2,7 +2,7 @@ import express from "express";
 import sequelize from "../../db/db.js"
 import { ResourceNotFound, ValidationError } from '../error/errors.js'; //menejo de errores
 import { ReservasGet, ReservaPost, ReservasPut, ReservasDelete, ReservasGetById } from "../service/reservas/reserva.service.js"
-import { TipoReservasGet, TipoReservasPost, TipoReservasPut, TipoReservasDelete } from "../service/reservas/tipoReserva.service.js"
+import { TipoReservasGet, TipoReservasPost, TipoReservasPut, TipoReservasDelete, TipoReservasGetById } from "../service/reservas/tipoReserva.service.js"
 
 
 const router = express.Router();
@@ -28,7 +28,7 @@ router.delete('/reserva/:id',ReservasDelete)
 // GET
 
 router.get('/tipoReserva', TipoReservasGet)
-router.get('/tipoReserva/:id', TipoReservasGet)
+router.get('/tipoReserva/:id', TipoReservasGetById)
 
 // POST
 

@@ -2,10 +2,15 @@ import axios from 'axios';
 
 const URL = 'http://localhost:3000/api/tipoReserva';
 
-const getTipoReservas = async () => {
+const getTipoReservas = async (descripcion) => {
     try {
-        const res = await axios.get(URL);
-        return res.data;
+        if (descripcion) {
+            const res = await axios.get(`${URL}?fechaReserva=${descripcion}`);
+            return res.data;
+        } else {
+            const res = await axios.get(URL);
+            return res.data;
+        }
     } catch (error) {
         console.error('Error fetching Reserva:', error);
         return [];

@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import Alert from 'react-bootstrap/Alert';
-import './Reservas.css';
 import { ReservaListado } from "./ComponentesHijos/ReservaListado.jsx";
 import ReservaRegistro from "./ComponentesHijos/ReservaRegistro.jsx";
 import reservasService from "../../services/reservas/reservas.service.js";
 import canchasService from "../../services/Canchas/canchas.service.js";
 import clientesService from "../../services/clientes/clientes.services.js";
 import tipoReservasService from "../../services/reservas/tipoReservas.service.js";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Alert from 'react-bootstrap/Alert';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import './Reservas.css';
 
 export default function Reservas() {
   const [action, setAction] = useState('C');
@@ -19,17 +21,21 @@ export default function Reservas() {
   const [clientes, setClientes] = useState([]);
   const [tipoReservas, setTipoReservas] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
-  const [showInactive, setShowInactive] = useState(false); // Nuevo estado para mostrar reservas inactivas
+  const [showInactive, setShowInactive] = useState(false);
+  const [showModal, setShowModal] = useState(false); // Nuevo estado para el modal
+  const [modalAction, setModalAction] = useState(null); // Nuevo estado para la acción del modal
+  const [modalReserva, setModalReserva] = useState(null); // Nuevo estado para la reserva del modal
 
   const { handleSubmit, register } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    if (!data.fecha) {
+    console.log(data.descripcion)
+    if (!data.descripcion) {
       setShowAlert(false);
       setCurrentPage(1);
       return loadData();
     }
-    const reservaFiltrada = await reservasService.getReservasPorFecha(data.fecha);
+    const tipoReservaFiltrada = await tipoReservasService.getTipoReservas(data.descripcion);
     if (!Array.isArray(reservaFiltrada) || reservaFiltrada.length === 0) {
       setShowAlert(true);
       return loadData();
@@ -44,6 +50,10 @@ export default function Reservas() {
     loadData();
     fetchAuxiliaryData();
   }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [showInactive]);
 
   const loadData = async () => {
     const data = await reservasService.getReservas();
@@ -72,14 +82,27 @@ export default function Reservas() {
     setAction('M');
   };
 
-  const onEliminarReserva = async (reserva) => {
-    await reservasService.deleteReservas(reserva.idReserva);
-    loadData();
+  const onEliminarReserva = async () => {
+    if (modalReserva) {
+      await reservasService.deleteReservas(modalReserva.idReserva);
+      setModalReserva(null);
+      setShowModal(false);
+      loadData();
+    }
+  };
+
+  const onToggleActivo = async () => {
+    if (modalReserva) {
+      modalReserva.activo = !modalReserva.activo;
+      await reservasService.updateReservas(modalReserva);
+      setModalReserva(null);
+      setShowModal(false);
+      loadData();
+    }
   };
 
   const toggleShowInactive = () => {
-    setShowInactive(!showInactive);
-    loadData();
+    setShowInactive(prev => !prev);
   };
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -91,19 +114,32 @@ export default function Reservas() {
     setCurrentPage(pageNumber);
   };
 
+  const handleShowModal = (action, reserva) => {
+    setModalAction(action);
+    setModalReserva(reserva);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalAction(null);
+    setModalReserva(null);
+    setShowModal(false);
+  };
+
   const searchForm = (
     <form onSubmit={onSubmit} className="d-flex">
-      <label htmlFor="fecha" style={{ marginRight: 10 }}>Filtrar por fecha:</label>
       <input
-        type="date"
-        {...register("fecha")}
+        htmlFor="tipoReserva"
+        style={{ marginLeft: 50, marginRight: 20, width: 300}}
+        type="text"
+        {...register("descripcion")}
         id="fecha"
         className="form-control"
-        placeholder="Buscar por Fecha"
+        placeholder="Buscar por Tipo Reserva"
         aria-label="Example text with button addon"
         aria-describedby="button-addon1"
       />
-      <button className="btn btn-filtrar" type="submit" id="button-addon1" style={{ background: 'lightgreen', marginLeft: 20 }}>
+      <button className="btn btn-filtrar" type="submit" id="button-addon1" style={{ background: 'lightgreen'}}>
         Buscar
       </button>
     </form>
@@ -123,13 +159,16 @@ export default function Reservas() {
       )}
       {action === 'C' && (
         <>
-          <button className="btn btn-secondary" onClick={toggleShowInactive}>
-            {showInactive ? 'Ocultar Inactivas' : 'Mostrar Inactivas'}
-          </button>
+          <div style={{ alignItems: "center", display: "flex" }}>
+            <button className="btn btn-secondary" id="BottonInactivas" style={{ width: 200, alignItems: "center" }} onClick={toggleShowInactive}>
+              {showInactive ? 'Mostrar Inactivas' : 'Ocultar Inactivas'}
+            </button>
+          </div>
           <ReservaListado
             rows={currentItems}
             onModificarReserva={onModificarReserva}
-            onEliminarReserva={onEliminarReserva}
+            onEliminarReserva={(reserva) => handleShowModal('eliminar', reserva)}
+            onToggleActivoReserva={(reserva) => handleShowModal('toggleActivo', reserva)}
             canchas={canchas}
             clientes={clientes}
             tipoReservas={tipoReservas}
@@ -142,7 +181,26 @@ export default function Reservas() {
             setShowAlert={setShowAlert}
           />
         </>
+
       )}
+
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {modalAction === 'eliminar' && "¿Estás seguro de que quieres eliminar esta reserva?"}
+          {modalAction === 'toggleActivo' && `¿Estás seguro de que quieres ${modalReserva?.activo ? 'desactivar' : 'activar'} esta reserva?`}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={modalAction === 'eliminar' ? onEliminarReserva : onToggleActivo}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
