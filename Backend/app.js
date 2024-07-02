@@ -24,7 +24,7 @@ dbInit();
 app.use('/api', routerReservas); 
 app.use('/api', routerTipoReserva); 
 app.use('/api', routerCanchas);
-app.use('/api', routerTipoReserva);
+app.use('/api', routerTipoCancha);
 app.use('/api', routerClientes);
 app.use('/api', routerUsuario)
 

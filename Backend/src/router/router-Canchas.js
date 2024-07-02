@@ -2,7 +2,6 @@ import express from "express";
 import sequelize from "../../db/db.js"
 import { ResourceNotFound, ValidationError } from '../error/errors.js'; //menejo de errores
 import { registrarCancha, getCancha, editarCancha, eliminarCancha } from '../service/canchas/canchas.service.js';
-import { registrarTipoCancha, getTipoCancha, editarTipoCancha, eliminarTipoCancha } from '../service/canchas/tipoCancha.service.js';
 
 const router = express.Router();
 
