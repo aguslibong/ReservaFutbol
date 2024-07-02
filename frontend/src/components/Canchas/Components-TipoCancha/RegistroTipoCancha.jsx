@@ -35,10 +35,6 @@ const RegistroTipoCancha = ({ setAction, loadData, cancha }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <h5>{cancha ? 'Actualizar Cancha' : 'Registro de Cancha'}</h5>
         <div className="form-group">
-          <label htmlFor="idCancha">ID Cancha: no Modificable</label>
-          <input type="text" className="form-control" id="idCancha" readOnly {...register("idCancha")} />
-        </div>
-        <div className="form-group">
           <label htmlFor="descripcion">Descripción:</label>
           <input type="text" className="form-control" id="descripcion" {...register("descripcion", { required: 'Este campo es requerido' })} />
           {errors.descripcion && <span className='error'>{errors.descripcion.message}</span>}
@@ -48,6 +44,7 @@ const RegistroTipoCancha = ({ setAction, loadData, cancha }) => {
           <button type="button" className="btn btn-danger mt-3" onClick={() => setAction('C')}>Cancelar</button>
         </div>
       </form>
+      
     </div>
   );
 };
