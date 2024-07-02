@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Container, Row, Col, Button, Table } from 'react-bootstrap';
 
 
-const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId }) => {
+const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId, tipoCancha }) => {
     const [inputValue, setInputValue] = useState('');
 
     const handleInputChange = (event) => {
@@ -24,18 +24,26 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
         buscarId(inputValue);
     };
 
+    const getNombreTipoCancha = (idTipoCancha) => {
+        console.log(tipoCancha)
+        console.log(idTipoCancha)
+        const NombreTipocancha = tipoCancha.find(tipoCancha => tipoCancha.idTipoCancha === idTipoCancha);
+        return NombreTipocancha ? NombreTipocancha.descripcion : '';
+    };
+
     const tbody = rows[0] !== null ? (
         rows.map(e => (
             <tr key={e.idCancha}>
-                <td>{e.idCancha}</td>
                 <td>{e.fechaMantenimiento}</td>
-                <td>{e.idTipoCancha}</td>
+                <td>
+                   {getNombreTipoCancha(e.idTipoCancha)} 
+                </td>
                 <td>{e.descripcion}</td>
                 <td>
                     <img className="fotoCancha" src={e.foto} alt={e.descripcion} />
                 </td>
                 <td>
-                    <Button variant="secondary" className="me-3" onClick={() => onClickUpdate(e)}>Modificar</Button>
+                    <Button className="btn btn-sm btn-outline-primary" title="Modificar" variant="secondary" onClick={() => onClickUpdate(e)}>Modificar</Button>
                     <Button variant="danger" className="me-3" onClick={() => onClickDelete(e)}>Eliminar</Button>
                 </td>
             </tr>
@@ -68,12 +76,16 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
                     <Button variant="primary" className="m-3" onClick={onClickBuscar}>Buscar</Button>
                 </Col>
             </Row>
+            <Row >
+                <Col>
+                    <Button variant="secondary" className="mt-3" onClick={onRegistrar}>Registrar Cancha</Button>
+                </Col>
+            </Row>
             <Row>
                 <Col>
                     <Table bordered>
                         <thead className="bg-light">
                             <tr>
-                                <th scope="col">ID</th>
                                 <th scope="col">Fecha Mantenimiento</th>
                                 <th scope="col">Tipo Cancha</th>
                                 <th scope="col">Descripción</th>
@@ -85,17 +97,6 @@ const ConsultaCanchas = ({ rows, onRegistrar, onModificar, onDelete, buscarId })
                             {tbody}
                         </tbody>
                     </Table>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Button variant="secondary" className="mt-3" onClick={onRegistrar}>Registrar Cancha</Button>
-                </Col>
-            </Row>
-            <Row className="mt-3 mb-3">
-                <Col className="d-flex justify-content-end">
-                    <Link to="/inicio" className="btn btn-primary mx-2">Menu</Link>
-                    <Link to="/cancha/tipocancha" className="btn btn-primary mx-2">Gestionar TipoCancha</Link>
                 </Col>
             </Row>
         </Container>

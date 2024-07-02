@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ConsultaCanchas from './Components-Canchas/ConsultaCanchas.jsx';
 import RegistroCanchas from './Components-Canchas/RegistroCanchas.jsx';
 import service from '../../services/Canchas/canchas.service.js'
+import serviceTipoCancha from '../../services/Canchas/tipoCanchas.service.js'
 import './Cancha.css'
 
 
@@ -9,9 +10,11 @@ export default function Canchas() {
     const [action, setAction] = useState('C');
     const [rows, setRows] = useState([]);
     const [selectedCanchas, setSelectedCanchas] = useState(null);
+    const [arrayTipoCancha, setArrayTipoCancha] = useState(null)
 
     useEffect(() => {
         loadData();
+        getTipoCancha()
     }, []);
     
     const loadData = async (id) => {
@@ -25,6 +28,11 @@ export default function Canchas() {
         }
         
     };
+
+    const getTipoCancha = async () =>{
+        const data = await serviceTipoCancha.getTipocanchas()
+        setArrayTipoCancha (data)
+    }
 
     const onRegistrar = () => {
         setSelectedCanchas (null)
@@ -56,7 +64,7 @@ export default function Canchas() {
             {
                 action === 'C' && (
                     <>
-                        <ConsultaCanchas rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} buscarId={onBuscar} />
+                        <ConsultaCanchas rows={rows} onRegistrar={onRegistrar} onModificar={onModificar} onDelete={onDelete} buscarId={onBuscar} tipoCancha={arrayTipoCancha}/>
                     </>
                     
                 )

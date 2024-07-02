@@ -29,12 +29,17 @@ const Cancha = sequelize.define('Cancha', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    activo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    }
 }, {
     //tableName: 'Cancha',
     timestamps: false,
 });
 
-TipoCancha.hasMany(Cancha, { foreignKey: 'idTipoCancha' }); //1..*
+TipoCancha.hasMany(Cancha, { foreignKey: 'idTipoCancha' });
 Cancha.belongsTo(TipoCancha, { foreignKey: 'idTipoCancha' }); 
 
 export default Cancha;

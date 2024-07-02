@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import tipoCanchasService from '../../../services/Canchas/tipoCanchas.service.js';
 import canchasService from '../../../services/Canchas/canchas.service.js';
+import { Modal, Button } from 'react-bootstrap';
 
 const RegistroCanchas = ({ setAction, loadData, cancha }) => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   
   const [tipoCanchas, setTipoCanchas] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState(null);
 
   // Efecto para obtener tipos de canchas
   useEffect(() => {
@@ -21,12 +24,9 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
     fetchTipoCanchas();
   }, []);
 
-
   // Efecto para setear valores del formulario
   useEffect(() => {
     if (cancha) {
-      console.log('Setting form values:', cancha);
-      setValue('idCancha', cancha.idCancha);
       setValue('fechaMantenimiento', cancha.fechaMantenimiento);
       setValue('idTipoCancha', cancha.idTipoCancha);
       setValue('descripcion', cancha.descripcion);
@@ -34,17 +34,22 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
     }
   }, [cancha, setValue]);
 
+  const handleFormSubmit = (data) => {
+    setFormData(data);
+    setShowModal(true);
+  };
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       if (cancha) {
-        const updatedCancha = { ...cancha, ...data };
+        const updatedCancha = { ...cancha, ...formData };
         await canchasService.updateCanchas(updatedCancha);
       } else {
-        await canchasService.saveCanchas(data);
+        await canchasService.saveCanchas(formData);
       }
       loadData();
       setAction('C');
+      setShowModal(false);
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -52,12 +57,8 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
 
   return (
     <div className='container_app'>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <h5>{cancha ? 'Actualizar Cancha' : 'Registro de Cancha'}</h5>
-        <div className="form-group">
-          <label htmlFor="idCancha">ID Cancha: no Modificable</label>
-          <input type="text" className="form-control" id="idCancha" readOnly {...register("idCancha")} />
-        </div>
         <div className="form-group">
           <label htmlFor="fechaMantenimiento">Fecha Mantenimiento:</label>
           <input type="date" className="form-control" id="fechaMantenimiento" {...register("fechaMantenimiento", { required: 'Este campo es requerido' })} />
@@ -88,9 +89,19 @@ const RegistroCanchas = ({ setAction, loadData, cancha }) => {
           <button type="button" className="btn btn-danger mt-3" onClick={() => setAction('C')}>Cancelar</button>
         </div>
       </form>
+
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmación</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>¿Está seguro de que desea enviar el formulario?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancelar</Button>
+          <Button variant="primary" onClick={onSubmit}>Sí, enviar</Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
 
 export default RegistroCanchas;
-

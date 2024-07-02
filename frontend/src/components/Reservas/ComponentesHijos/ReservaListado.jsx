@@ -15,6 +15,7 @@ export function ReservaListado({ rows, onModificarReserva, onEliminarReserva, ca
     };
 
     const getDescripcionTipoReserva = (idTipoReserva) => {
+        console.log(tipoReservas)
         const tipoReserva = tipoReservas.find(tipoReserva => tipoReserva.idTipoReserva === idTipoReserva);
         return tipoReserva ? tipoReserva.descripcion : '';
     };

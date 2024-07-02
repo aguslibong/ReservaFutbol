@@ -48,6 +48,11 @@ const Reserva = sequelize.define("Reserva", {
     hora: {
         type: DataTypes.TIME,
         allowNull: false
+    },
+    activo: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     }
 }, {
     tableName: "Reserva",
