@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import TipoReservaListado from './ComponentesHijos/TipoReservaListado';
 import TipoReservaRegistro from './ComponentesHijos/TipoReservaRegistro';
 import tipoReservasService from '../../services/reservas/tipoReservas.service';
-import { Link } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import './Reservas.css';
 

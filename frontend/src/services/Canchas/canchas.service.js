@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:3000/api/cancha';
+const URL = 'http://localhost:3000/api/cancha/cancha';
 
 const getCanchas = async (id) => {
     if (id){
