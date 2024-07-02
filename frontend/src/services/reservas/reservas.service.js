@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:3000/api/reserva/reserva';
+const URL = 'http://localhost:3000/api/reserva';
 
 const getReservas = async () => {
   try {

@@ -21,11 +21,11 @@ app.use(express.urlencoded({ extended: true }));
 dbInit();
 
 // Rutas protegidas
-app.use('/api/reserva', verifyToken, isAdminOrMember, routerReservas); 
-app.use('/api/tiporeserva', verifyToken, isAdmin, routerTipoReserva); 
-app.use('/api/cancha', verifyToken, isAdminOrMember, routerCanchas);
-app.use('/api/tipocancha', verifyToken, isAdmin, routerTipoReserva);
-app.use('/api/cliente', verifyToken, isAdmin, routerClientes);
+app.use('/api', routerReservas); 
+app.use('/api', routerTipoReserva); 
+app.use('/api', routerCanchas);
+app.use('/api', routerTipoReserva);
+app.use('/api', routerClientes);
 app.use('/api', routerUsuario)
 
 app.get("/", (_, res) => {
